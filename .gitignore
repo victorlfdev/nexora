@@ -45,8 +45,10 @@ next-env.d.ts
 
 # playwright
 .playwright-mcp/
+playwright/
 playwright-report/
 test-results/
+*.png
 
 # impeccable
 .impeccable/
