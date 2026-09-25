@@ -8,6 +8,20 @@ interface ServicesProps {
   lenisRef: RefObject<Lenis | null>;
 }
 
+function useIsTouchDevice() {
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+    setIsTouch(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  return isTouch;
+}
+
 const services = [
   {
     number: "01",
@@ -37,6 +51,7 @@ const services = [
 ];
 
 export default function Services({ lenisRef }: ServicesProps) {
+  const isTouch = useIsTouchDevice();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -161,7 +176,7 @@ export default function Services({ lenisRef }: ServicesProps) {
                 </span>
               </div>
 
-              {hoveredIndex === i && (
+              {(isTouch || hoveredIndex === i) && (
                 <div className="absolute right-0 top-1/2 mr-8 -translate-y-1/2 font-mono text-xs tracking-wider text-light/40">
                   {service.description}
                 </div>
