@@ -134,7 +134,3 @@ nexora-landing/
 npx playwright test
 ```
 
-## References
-
-- vanlent.dev — creative developer inspiration
-- crency.com — strong aesthetic + conversion
