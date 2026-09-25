@@ -83,12 +83,12 @@ export default function CTA({ lenisRef }: CTAProps) {
           className="group relative inline-block overflow-hidden rounded-full border border-light/20 px-12 py-5 transition-colors duration-300 hover:border-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-dark"
           aria-label="Start a project — contact us at hello@nexora.dev"
         >
-          <span className="relative z-10 font-mono text-sm tracking-[0.2em] text-light transition-colors duration-300 group-hover:text-accent">
+          <span className="relative z-10 font-mono text-sm tracking-[0.2em] text-light transition-all duration-300 group-hover:text-accent group-hover:opacity-0">
             START A PROJECT
           </span>
-          <span className="absolute bottom-0 left-0 right-0 top-0 flex translate-y-full items-center justify-center bg-accent/10 font-mono text-sm tracking-[0.2em] text-accent transition-transform duration-300 group-hover:translate-y-0">
-            LET&apos;S TALK
-          </span>
+          <span className="absolute bottom-0 left-0 right-0 top-0 flex translate-y-full items-center justify-center bg-accent font-mono text-sm tracking-[0.2em] text-dark opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              LET&apos;S TALK
+            </span>
         </a>
       </div>
     </section>

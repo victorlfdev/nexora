@@ -23,10 +23,24 @@ const elements = [
 
 function generatePositions(count: number) {
   const positions: { top: string; left: string }[] = [];
+  const seeded = [
+    { top: 15, left: 12 },
+    { top: 25, left: 78 },
+    { top: 45, left: 8 },
+    { top: 55, left: 85 },
+    { top: 35, left: 55 },
+    { top: 70, left: 20 },
+    { top: 10, left: 65 },
+    { top: 80, left: 45 },
+    { top: 50, left: 30 },
+    { top: 65, left: 70 },
+  ];
   for (let i = 0; i < count; i++) {
+    const seed = seeded[i % seeded.length];
+    const jitter = 8;
     positions.push({
-      top: `${20 + Math.random() * 60}%`,
-      left: `${10 + Math.random() * 80}%`,
+      top: `${seed.top + (Math.random() * jitter - jitter / 2)}%`,
+      left: `${seed.left + (Math.random() * jitter - jitter / 2)}%`,
     });
   }
   return positions;
@@ -137,14 +151,14 @@ export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) 
       </div>
 
       {/* Chaotic elements */}
-      <div className="relative flex h-96 w-full">
+      <div className="chaos-field relative mx-auto h-[400px] w-full max-w-5xl">
         {elements.map((el, i) => (
           <span
             key={el}
             className="chaos-element absolute font-mono text-xs tracking-widest text-dark/40"
             style={{
-              top: chaosPositions[i]?.top ?? `${20 + Math.random() * 60}%`,
-              left: chaosPositions[i]?.left ?? `${10 + Math.random() * 80}%`,
+              top: chaosPositions[i]?.top ?? "50%",
+              left: chaosPositions[i]?.left ?? "50%",
             }}
           >
             {el}

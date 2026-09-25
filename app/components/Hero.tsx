@@ -37,10 +37,17 @@ export default function Hero() {
             const progress = self.progress;
             const sp = settersRef.current;
 
-            // Phase 1 (0-0.2): Title grows
+            // Phase 1 (0-0.2): Title grows, tech elements appear
             if (progress < 0.2) {
               const p = progress / 0.2;
               sp.title({ scale: 1 + p * 0.3, opacity: 1 });
+              const techItems = document.querySelectorAll(".tech-elements .tech-item");
+              for (const el of Array.from(techItems)) {
+                const alpha = Math.round(p * 0.8 * 255);
+                (el as HTMLElement).style.opacity = String(p);
+                (el as HTMLElement).style.color = `rgba(245,245,242,${(alpha / 255).toFixed(2)})`;
+                (el as HTMLElement).style.transform = `translate(-50%, -50%) translateY(${-20 * (1 - p)}px)`;
+              }
             }
 
             // Phase 2 (0.2-0.4): Words separate
@@ -49,17 +56,6 @@ export default function Hero() {
               sp.line1({ x: -p * 60, opacity: 1 - p * 0.5 });
               sp.line2({ x: p * 60, opacity: 1 - p * 0.5 });
               sp.line3({ y: p * 40, opacity: 1 - p * 0.8 });
-            }
-
-            // Phase 3 (0.4-0.6): Tech elements appear
-            if (progress >= 0.4 && progress < 0.6) {
-              const p = (progress - 0.4) / 0.2;
-              gsap.to(".tech-elements .tech-item", {
-                opacity: p,
-                y: -20 * (1 - p),
-                stagger: 0.05,
-                duration: 0.3,
-              });
             }
 
             // Phase 4 (0.6-0.8): Convergence

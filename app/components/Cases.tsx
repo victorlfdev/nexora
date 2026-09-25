@@ -87,7 +87,7 @@ export default function Cases() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-dark"
+      className="relative bg-dark overflow-hidden"
       role="region"
       aria-label="Selected Work"
     >
@@ -118,7 +118,7 @@ export default function Cases() {
             className={`case-card ${
               isMobile
                 ? "w-full rounded-xl border border-light/10 bg-dark-secondary p-6 sm:p-10"
-                : "min-w-[85vw] max-w-[600px] flex-shrink-0 rounded-xl border border-light/10 bg-dark-secondary p-10"
+                : "min-w-[60vw] max-w-[600px] flex-shrink-0 rounded-xl border border-light/10 bg-dark-secondary p-10"
             }`}
             role="article"
             aria-label={`Case ${caseItem.id}: ${caseItem.name}`}
