@@ -1,0 +1,893 @@
+## Briefing consolidado — conceito inicial
+
+### Conceito da empresa
+
+Eu criaria uma **software house fictícia brasileira de alto nível**, posicionada entre:
+
+> **Software Engineering × Creative Technology × Digital Experiences**
+
+Ela não seria apresentada simplesmente como "uma empresa que faz sites".
+
+A ideia seria:
+
+> **Transformamos ideias complexas em produtos digitais extraordinários.**
+
+Ela atende desde uma empresa que precisa de uma landing page até uma organização que precisa de um SaaS, API, dashboard ou solução baseada em IA.
+
+O grande diferencial da marca seria:
+
+**engenharia sólida por trás de experiências digitais memoráveis.**
+
+---
+
+# 01 — Nome
+
+Como você escolheu **A — eu criar o nome**, proponho inicialmente:
+
+# **NEXORA**
+
+**NEXORA**
+`Digital Systems & Experiences`
+
+A ideia do nome vem de uma combinação conceitual de *next + nexus + aura*: conexão, tecnologia e próxima geração.
+
+Visualmente funciona bem porque:
+
+```text
+N E X O R A
+```
+
+tem bastante presença tipográfica e pode ser explorado em animações.
+
+Por exemplo:
+
+```text
+N E X O R A
+
+N E X O R A
+      ↓
+NEXORA
+      ↓
+NEXORA / DIGITAL SYSTEMS
+```
+
+**Se você gostar do conceito, podemos depois fazer uma etapa específica de naming e verificar disponibilidade de domínio/marca antes de usar como projeto público.**
+
+---
+
+# 02 — Posicionamento
+
+### NEXORA
+
+> **We build what comes next.**
+
+ou, em português:
+
+> **Construímos o que vem depois.**
+
+Subheadline:
+
+> Produtos digitais, sistemas e experiências desenvolvidos para transformar ideias complexas em soluções reais.
+
+A empresa teria quatro pilares:
+
+```text
+STRATEGY
+     ↓
+DESIGN
+     ↓
+ENGINEERING
+     ↓
+EXPERIENCE
+```
+
+Isso é importante porque evita que a empresa pareça apenas uma "agência de sites".
+
+---
+
+# 03 — Direção visual
+
+Aqui eu seguiria exatamente o caminho que você escolheu:
+
+### Dark → Light
+
+Começamos com:
+
+```text
+████████████████████
+      DARK
+████████████████████
+```
+
+e gradualmente fazemos a página migrar para:
+
+```text
+░░░░░░░░░░░░░░░░░░░░
+       LIGHT
+░░░░░░░░░░░░░░░░░░░░
+```
+
+Mas não faria isso como simplesmente:
+
+```css
+background: black → white;
+```
+
+A mudança seria parte da narrativa.
+
+### Conceito:
+
+**Do desconhecido → à clareza.**
+
+No início:
+
+> IDEA
+
+No final:
+
+> PRODUCT
+
+---
+
+# 04 — Paleta
+
+### Base
+
+```text
+#050505
+#0B0B0B
+#F5F5F2
+#FFFFFF
+```
+
+### Accent
+
+Um **azul elétrico** usado com muita parcimônia.
+
+Algo na região:
+
+```text
+#4D7CFE
+```
+
+Não quero uma página "neon cyberpunk".
+
+O azul aparece somente quando precisamos comunicar:
+
+* interação;
+* tecnologia;
+* dados;
+* conexão;
+* estado ativo.
+
+Isso mantém o aspecto premium.
+
+---
+
+# 05 — Tipografia
+
+Eu usaria duas famílias.
+
+### Display
+
+Algo com personalidade e bastante peso.
+
+Exemplo:
+
+**Space Grotesk / Geist / Satoshi / Instrument Sans**
+
+Para:
+
+```text
+WE BUILD
+WHAT COMES
+NEXT.
+```
+
+### Monospace
+
+Para pequenos elementos técnicos:
+
+```text
+01 / 04
+SYSTEMS
+API
+98.4%
+SCROLL TO EXPLORE
+```
+
+Isso cria aquela sensação de **"creative developer / engineering studio"** sem transformar tudo em estética de programação.
+
+---
+
+# 06 — A experiência começa antes do Hero
+
+Aqui quero fazer algo mais interessante.
+
+A página abre praticamente vazia.
+
+```text
+                         NEXORA
+
+                  DIGITAL SYSTEMS
+                  & EXPERIENCES
+
+                              01
+                        SCROLL TO EXPLORE
+```
+
+Conforme o usuário começa a rolar:
+
+### Elemento 1
+
+```text
+N
+```
+
+entra.
+
+### Elemento 2
+
+```text
+E
+```
+
+entra.
+
+### Elemento 3
+
+```text
+X
+```
+
+...
+
+Até formar:
+
+```text
+NEXORA
+```
+
+Então a palavra começa a se deslocar para a lateral enquanto surge:
+
+> **WE BUILD WHAT COMES NEXT.**
+
+Isso já demonstra que o site não é estático.
+
+---
+
+# 07 — HERO
+
+Eu faria o Hero ocupar aproximadamente:
+
+**150–200vh**
+
+Não porque precisamos de espaço, mas porque queremos transformar o Hero em uma pequena "cena".
+
+Visual:
+
+```text
+                    NEXORA
+
+              WE BUILD WHAT
+                 COMES NEXT.
+
+      Digital products · Software · AI
+
+                              ↓
+                         SCROLL TO BEGIN
+```
+
+Ao scroll:
+
+### Fase 1
+
+O título aumenta.
+
+```text
+WE BUILD WHAT
+COMES NEXT.
+```
+
+↓
+
+### Fase 2
+
+As palavras começam a se separar.
+
+```text
+WE       BUILD
+
+WHAT
+
+COMES             NEXT
+```
+
+↓
+
+### Fase 3
+
+Elementos técnicos aparecem entre elas.
+
+```text
+API
+AI
+WEB
+DATA
+SYSTEMS
+```
+
+↓
+
+### Fase 4
+
+Tudo converge novamente.
+
+↓
+
+### Fase 5
+
+A tela muda de **dark para light**.
+
+E entramos na próxima seção.
+
+---
+
+# 08 — "Complexity → Clarity"
+
+Essa seria uma das **principais cenas da página**.
+
+Tela clara.
+
+No centro:
+
+```text
+COMPLEXITY
+```
+
+Ao redor:
+
+```text
+API
+DATABASE
+AI
+UX
+INFRA
+DATA
+SYSTEMS
+```
+
+Tudo começa desorganizado.
+
+Conforme o usuário scrolla:
+
+```text
+      API
+
+AI          DATA
+
+      SYSTEM
+
+DATABASE       UX
+```
+
+↓
+
+os elementos começam a se organizar.
+
+↓
+
+```text
+             PRODUCT
+
+        ┌─────────────┐
+        │             │
+        │   SOLUTION  │
+        │             │
+        └─────────────┘
+```
+
+E aparece:
+
+> **Complex problems deserve simple experiences.**
+
+Essa seção seria praticamente uma demonstração visual da proposta da empresa.
+
+---
+
+# 09 — SERVICES
+
+Em vez de cards convencionais:
+
+```text
+[ Web ]
+[ AI ]
+[ API ]
+[ SaaS ]
+```
+
+faria uma **lista vertical interativa**.
+
+```text
+01   DIGITAL PRODUCTS
+
+02   WEB EXPERIENCES
+
+03   AI & AUTOMATION
+
+04   SYSTEMS & APIs
+
+05   DATA & DASHBOARDS
+```
+
+Quando o cursor passa:
+
+```text
+01   DIGITAL PRODUCTS
+     ─────────────────────────────
+     
+     SaaS platforms
+     Internal systems
+     Web applications
+
+                         [visual]
+```
+
+E a imagem/mockup acompanha a seleção.
+
+Aqui entram:
+
+* parallax;
+* hover;
+* image reveal;
+* clip-path;
+* GSAP timelines.
+
+---
+
+# 10 — PROCESS
+
+Essa será provavelmente a seção mais importante para **ScrollTrigger**.
+
+Título:
+
+> **FROM IDEA TO IMPACT.**
+
+E teremos:
+
+```text
+01
+DISCOVER
+
+02
+DEFINE
+
+03
+DESIGN
+
+04
+BUILD
+
+05
+LAUNCH
+```
+
+Mas não como uma lista.
+
+A seção terá aproximadamente:
+
+**400–500vh**
+
+e ficará **pinned**.
+
+O usuário continua rolando, mas a "cena" permanece.
+
+---
+
+### Cena 01
+
+```text
+01
+
+DISCOVER
+
+What are we actually solving?
+```
+
+↓
+
+### Cena 02
+
+```text
+02
+
+DEFINE
+
+Turning complexity into
+a clear product direction.
+```
+
+↓
+
+### Cena 03
+
+```text
+03
+
+DESIGN
+
+Interface.
+Experience.
+Motion.
+```
+
+↓
+
+### Cena 04
+
+```text
+04
+
+BUILD
+
+React
+TypeScript
+Node
+PostgreSQL
+AI
+APIs
+```
+
+↓
+
+### Cena 05
+
+```text
+05
+
+LAUNCH
+
+FROM IDEA
+TO
+REAL PRODUCT
+```
+
+Essa única seção pode explorar:
+
+**GSAP ScrollTrigger + pin + scrub + timeline + stagger + clip-path + parallax.**
+
+---
+
+# 11 — CASES
+
+Aqui entra sua resposta de que quer projetos fictícios.
+
+Eu criaria **3 produtos completamente fictícios**, mas com aparência de produtos reais.
+
+### CASE 01 — ORBIT
+
+**Enterprise Intelligence Platform**
+
+Dashboard para análise operacional.
+
+Visual:
+
+```text
+┌──────────────────────────────┐
+│ ORBIT                        │
+│                              │
+│ Revenue      +24.8%          │
+│                              │
+│ ███████████████████          │
+│ ██████████████████████       │
+│                              │
+└──────────────────────────────┘
+```
+
+---
+
+### CASE 02 — FLUX
+
+**AI Workflow Platform**
+
+Automação de processos utilizando IA.
+
+Visual mais experimental.
+
+---
+
+### CASE 03 — PULSE
+
+**Digital Operations System**
+
+Sistema interno para gestão empresarial.
+
+---
+
+# 12 — Cases + horizontal scroll
+
+Aqui podemos fazer algo bem interessante.
+
+No desktop:
+
+```text
+                ┌──────────────┐
+                │              │
+                │    ORBIT     │
+                │              │
+                └──────────────┘
+
+             ← horizontal scroll →
+```
+
+Enquanto o usuário continua rolando verticalmente, os cases se movem horizontalmente.
+
+Implementação:
+
+```text
+ScrollTrigger
+    +
+pin
+    +
+xPercent
+    +
+scrub
+```
+
+Isso cria um dos momentos "Caramba, esse site é absurdo".
+
+---
+
+# 13 — Technology
+
+Depois dos cases, voltamos ao lado mais técnico.
+
+Título:
+
+> **BUILT TO PERFORM.**
+
+E os elementos começam a aparecer:
+
+```text
+REACT
+NEXT.JS
+TYPESCRIPT
+NODE
+POSTGRESQL
+AI
+API
+CLOUD
+```
+
+Mas não faria uma simples lista de tecnologias.
+
+Imagine:
+
+```text
+              NEXT.JS
+
+    REACT                NODE
+
+             NEXORA
+
+    AI                  API
+
+          POSTGRESQL
+```
+
+As tecnologias orbitam em torno de um núcleo.
+
+Parallax + mouse movement + scroll.
+
+---
+
+# 14 — About
+
+Aqui fazemos a empresa parecer humana.
+
+> **Technology should feel invisible.
+> The experience shouldn't.**
+
+Pequeno texto:
+
+> We combine strategy, design and engineering to build digital products that solve real problems and feel effortless to use.
+
+E uma imagem/visual abstrato com profundidade.
+
+---
+
+# 15 — CTA
+
+Depois de toda essa experiência, precisamos desacelerar.
+
+Tela novamente escura.
+
+Grande texto:
+
+# **HAVE AN IDEA?**
+
+↓
+
+# **LET'S BUILD IT.**
+
+E o botão:
+
+**Start a project →**
+
+Ao passar o mouse:
+
+```text
+START A PROJECT
+        ↓
+LET'S TALK
+```
+
+---
+
+# 16 — Footer
+
+Minimalista.
+
+```text
+NEXORA
+
+Digital Systems
+& Experiences
+
+São Paulo · Brazil
+
+Instagram
+LinkedIn
+GitHub
+Email
+
+© 2026 NEXORA
+```
+
+---
+
+# Arquitetura de animações
+
+Aqui eu separaria deliberadamente as tecnologias.
+
+## GSAP
+
+Para animações complexas e coreografadas:
+
+* Hero;
+* Split text;
+* timelines;
+* pin;
+* horizontal cases;
+* morphing;
+* clip-path;
+* sequências;
+* transições.
+
+## ScrollTrigger
+
+Para:
+
+```text
+scrub
+pin
+snap
+start/end
+horizontal movement
+timeline synchronization
+```
+
+## CSS Scroll-Driven Animations
+
+Para coisas que **não precisam de GSAP**.
+
+Por exemplo:
+
+```css
+animation-timeline: scroll();
+```
+
+para:
+
+* progress bars;
+* pequenos reveals;
+* opacity;
+* transforms simples;
+* indicadores de progresso.
+
+Isso é importante porque quero que o projeto demonstre que você sabe **quando não usar GSAP**.
+
+## Parallax
+
+Teremos múltiplas profundidades:
+
+```text
+Layer 01 ─── background
+Layer 02 ─── shapes
+Layer 03 ─── content
+Layer 04 ─── foreground
+```
+
+Cada uma com velocidades diferentes.
+
+---
+
+# O grande conceito da página
+
+Eu resumiria todo o projeto em:
+
+> ## **FROM COMPLEXITY TO CLARITY**
+
+A página começa caótica:
+
+```text
+dark
+↓
+complex
+↓
+abstract
+↓
+technical
+```
+
+e termina:
+
+```text
+light
+↓
+clear
+↓
+simple
+↓
+product
+```
+
+A própria **experiência de navegação demonstra o serviço da empresa**.
+
+Isso é muito mais interessante do que simplesmente colocar "somos uma empresa inovadora" embaixo de uma foto de notebook.
+
+---
+
+## Stack que eu recomendaria
+
+Para transformar isso em um projeto realmente forte para seu portfólio:
+
+```text
+Next.js
+TypeScript
+React
+GSAP
+GSAP ScrollTrigger
+Lenis
+Tailwind CSS
+```
+
+E **Three.js/R3F somente se encontrarmos uma cena 3D que realmente acrescente algo**. Não colocaria 3D simplesmente para dizer que usamos 3D.
+
+A referência do Van Lent reforça justamente essa combinação de desenvolvimento, motion e experiências digitais, enquanto a Crency mostra como uma estética forte pode continuar vinculada a serviços, cases e conversão. ([van Lent][1])
+
+### Próximo passo
+
+Antes de partir para código, eu faria **uma segunda etapa do briefing dedicada exclusivamente à identidade e ao conteúdo**: definir o nome final, slogan, personalidade verbal, textos reais de cada seção, 3 cases fictícios, stack exibida e direção dos elementos visuais.
+
+Depois disso, podemos transformar tudo em um **PRD/Design Brief extremamente detalhado**, já especificando coisas como:
+
+```text
+Hero
+ ├── timeline 0–2s
+ ├── scroll progress 0–20%
+ ├── text animation
+ ├── parallax layers
+ └── dark → light transition
+
+Process
+ ├── 500vh
+ ├── pin
+ ├── scrub
+ ├── 5 estados
+ └── progress indicator
+```
+
+Isso nos dá uma especificação suficientemente precisa para depois implementar a Landing Page sem acabar com aquele problema de **"cada componente tem uma animação legal, mas o site inteiro não parece uma experiência coesa"**.
+
+[1]: https://vanlent.dev/ "VAN LENT | Creative Developer, Amsterdam"
