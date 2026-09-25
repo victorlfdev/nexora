@@ -139,7 +139,7 @@ export default function Hero({ lenisRef }: HeroProps) {
       </div>
 
       {/* Main title */}
-      <div className="hero-title relative z-10 text-center">
+      <h1 className="hero-title relative z-10 text-center">
         <div className="line-1 text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] tracking-tight text-light">
           WE BUILD WHAT
         </div>
@@ -149,7 +149,7 @@ export default function Hero({ lenisRef }: HeroProps) {
         <div className="line-3 mt-2 text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] tracking-tight text-accent">
           NEXT.
         </div>
-      </div>
+      </h1>
 
       {/* Subtitle */}
       <div className="hero-subtitle mt-8 text-center">

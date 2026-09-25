@@ -9,9 +9,9 @@ interface FooterProps {
 
 export default function Footer({ lenisRef }: FooterProps) {
   const links = [
-    { label: "Instagram", href: "#" },
-    { label: "LinkedIn", href: "#" },
-    { label: "GitHub", href: "#" },
+    { label: "Instagram", href: "https://instagram.com/nexora" },
+    { label: "LinkedIn", href: "https://linkedin.com/company/nexora" },
+    { label: "GitHub", href: "https://github.com/nexora" },
     { label: "Email", href: "mailto:hello@nexora.dev" },
   ];
 
