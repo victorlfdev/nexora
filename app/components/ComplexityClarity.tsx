@@ -39,12 +39,6 @@ export default function ComplexityClarity({ lenisRef: _lenisRef }: ComplexityCla
   );
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {

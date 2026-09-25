@@ -27,12 +27,6 @@ export default function Technology({ lenisRef: _lenisRef }: TechnologyProps) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
     const ctx = gsap.context(() => {
       // Title reveal
       gsap.fromTo(
@@ -79,7 +73,11 @@ export default function Technology({ lenisRef: _lenisRef }: TechnologyProps) {
       });
     }, sectionRef);
 
-    // Mouse parallax
+    // Mouse parallax — only when motion is allowed
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     const handleMouseMove = (e: MouseEvent) => {
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
@@ -89,11 +87,15 @@ export default function Technology({ lenisRef: _lenisRef }: TechnologyProps) {
       });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    if (!prefersReducedMotion) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
 
     return () => {
       ctx.revert();
-      window.removeEventListener("mousemove", handleMouseMove);
+      if (!prefersReducedMotion) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
     };
   }, []);
 

@@ -12,12 +12,6 @@ export default function CTA({ lenisRef: _lenisRef }: CTAProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".cta-title",

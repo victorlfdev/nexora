@@ -78,12 +78,6 @@ export default function Services({ lenisRef: _lenisRef }: ServicesProps) {
   );
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".service-item",

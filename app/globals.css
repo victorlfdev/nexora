@@ -88,3 +88,19 @@ body {
     opacity: 0;
   }
 }
+
+/* Graceful degradation: ensure content is always visible
+   when GSAP animations are skipped (prefers-reduced-motion).
+   These defaults are overridden by GSAP when motion is allowed. */
+.tech-item,
+.product-box,
+.chaos-element {
+  opacity: 1 !important;
+}
+
+[data-scene] {
+  opacity: 0;
+}
+[data-scene="0"] {
+  opacity: 1;
+}
