@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface ComplexityClarityProps {
-  lenisRef: RefObject<Lenis | null>;
-}
 
 const elements = [
   "API",
@@ -22,7 +17,6 @@ const elements = [
 ];
 
 function generatePositions(count: number) {
-  const positions: { top: string; left: string }[] = [];
   const seeded = [
     { top: 15, left: 12 },
     { top: 25, left: 78 },
@@ -35,28 +29,37 @@ function generatePositions(count: number) {
     { top: 50, left: 30 },
     { top: 65, left: 70 },
   ];
-  for (let i = 0; i < count; i++) {
+  return Array.from({ length: count }, (_, i) => {
     const seed = seeded[i % seeded.length];
     const jitter = 8;
-    positions.push({
+    return {
       top: `${seed.top + (Math.random() * jitter - jitter / 2)}%`,
       left: `${seed.left + (Math.random() * jitter - jitter / 2)}%`,
-    });
-  }
-  return positions;
+    };
+  });
 }
 
-export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) {
+export default function ComplexityClarity() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [chaosPositions] = useState<{ top: string; left: string }[]>(() =>
-    generatePositions(elements.length)
-  );
+  const [chaosPositions] = useState(() => generatePositions(elements.length));
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setMousePos({
+      x: (e.clientX - (rect.left + rect.width / 2)) / rect.width,
+      y: (e.clientY - (rect.top + rect.height / 2)) / rect.height,
+    });
+  }, []);
 
   useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current as HTMLElement,
+          trigger: sectionRef.current,
           start: "top top+=100",
           end: `+=${window.innerHeight * 1.5}`,
           pin: true,
@@ -64,7 +67,6 @@ export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) 
         },
       });
 
-      // Phase 1: Chaotic state - elements scattered
       tl.fromTo(
         ".chaos-element",
         {
@@ -86,19 +88,13 @@ export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) 
         }
       );
 
-      // Phase 2: Elements start organizing
-      tl.to(
-        ".chaos-element",
-        {
-          opacity: 0.3,
-          scale: 0.8,
-          duration: 0.5,
-          stagger: 0.05,
-        },
-        "+=0.5"
-      );
+      tl.to(".chaos-element", {
+        opacity: 0.3,
+        scale: 0.8,
+        duration: 0.5,
+        stagger: 0.05,
+      }, "+=0.5");
 
-      // Phase 3: Product emerges
       tl.fromTo(
         ".product-box",
         {
@@ -116,59 +112,57 @@ export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) 
         "-=0.3"
       );
 
-      // Phase 4: Tagline appears
       tl.fromTo(
         ".tagline",
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
         "-=0.5"
       );
     }, sectionRef);
 
-    return () => ctx.revert();
-  }, []);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      ctx.revert();
+    };
+  }, [handleMouseMove]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-screen flex-col items-center justify-center bg-light"
+      className="relative flex min-h-screen flex-col items-center justify-center bg-light px-6"
       role="region"
       aria-label="Complexity to Clarity"
     >
-      {/* Main heading */}
-      <div className="mb-24 text-center">
-        <h2 className="text-[clamp(2rem,5vw,5rem)] font-bold tracking-tight text-dark">
+      <div className="mb-20 text-center">
+        <span className="font-mono text-xs tracking-[0.3em] text-dark/40">
+          THE TRANSFORMATION
+        </span>
+        <h2 className="mt-20 text-[clamp(2rem,4vw,4rem)] font-bold leading-[1.1] tracking-tight text-dark">
           COMPLEXITY
         </h2>
       </div>
 
-      {/* Chaotic elements */}
-      <div className="chaos-field relative mx-auto h-[400px] w-full max-w-5xl">
-        {elements.map((el, i) => (
-          <span
-            key={el}
-            className="chaos-element absolute font-mono text-xs tracking-widest text-dark/40"
-            style={{
-              top: chaosPositions[i]?.top ?? "50%",
-              left: chaosPositions[i]?.left ?? "50%",
-            }}
-          >
-            {el}
-          </span>
-        ))}
+      <div className="chaos-field relative mx-auto min-h-[60vh] w-full max-w-5xl">
+        {elements.map((el, i) => {
+          const depth = (i % 3 + 1) * 0.5;
+          return (
+            <span
+              key={el}
+className="chaos-element absolute font-mono text-xs tracking-widest text-dark/40"
+              style={{
+                top: chaosPositions[i]?.top ?? "50%",
+                left: chaosPositions[i]?.left ?? "50%",
+                transform: `translate(${mousePos.x * depth * 30}px, ${mousePos.y * depth * 30}px)`,
+              }}
+            >
+              {el}
+            </span>
+          );
+        })}
       </div>
 
-      {/* Product box */}
-      <div className="product-box relative mt-12 opacity-0">
-        <div className="border-2 border-dark/20 px-16 py-12">
+      <div className="product-box relative mt-20 opacity-0">
+        <div className="border border-dark/10 px-20 py-12">
           <div className="mb-4 text-center">
             <span className="font-mono text-xs tracking-[0.3em] text-dark/60">
               PRODUCT
@@ -182,9 +176,8 @@ export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) 
         </div>
       </div>
 
-      {/* Tagline */}
-      <div className="tagline mt-16 text-center">
-        <p className="font-mono text-sm tracking-wider text-dark/60">
+      <div className="tagline mt-20 text-center">
+        <p className="font-mono text-xs tracking-[0.25em] text-dark/60 pb-2">
           Complex problems deserve simple experiences.
         </p>
       </div>

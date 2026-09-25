@@ -61,7 +61,7 @@ export default function Home() {
       {!loading && (
         <>
           <Hero />
-          <ComplexityClarity lenisRef={lenisRef} />
+          <ComplexityClarity />
           <Services lenisRef={lenisRef} />
           <Process lenisRef={lenisRef} />
           <Cases />

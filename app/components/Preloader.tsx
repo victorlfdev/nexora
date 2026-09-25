@@ -114,9 +114,6 @@ export default function Preloader({ onExit }: PreloaderProps) {
           </span>
         ))}
       </div>
-      <div className="full-word mt-2 text-5xl font-bold tracking-widest text-light opacity-0">
-        NEXORA
-      </div>
       <div className="subtitle mt-3 font-mono text-sm tracking-[0.3em] text-light/60 opacity-0">
         DIGITAL SYSTEMS & EXPERIENCES
       </div>

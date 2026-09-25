@@ -37,9 +37,15 @@ export default function Hero() {
             const progress = self.progress;
             const sp = settersRef.current;
 
-            // Phase 1 (0-0.2): Title grows, tech elements appear
-            if (progress < 0.2) {
-              const p = progress / 0.2;
+            // Phase 0 (0-0.05): Subtitle disappears right after scroll begins
+            if (progress < 0.05) {
+              const p = progress / 0.05;
+              sp.subtitle({ opacity: 1 - p });
+            }
+
+            // Phase 1 (0.05-0.2): Title grows, tech elements appear
+            if (progress >= 0.05 && progress < 0.2) {
+              const p = (progress - 0.05) / 0.15;
               sp.title({ scale: 1 + p * 0.3, opacity: 1 });
               const techItems = document.querySelectorAll(".tech-elements .tech-item");
               for (const el of Array.from(techItems)) {
@@ -62,7 +68,6 @@ export default function Hero() {
             if (progress >= 0.6 && progress < 0.8) {
               const p = (progress - 0.6) / 0.2;
               sp.title({ opacity: 1 - p, scale: 1.3 - p * 0.3 });
-              sp.subtitle({ opacity: p, y: 20 * (1 - p) });
               sp.scrollInd(1 - p * 2);
             }
 
