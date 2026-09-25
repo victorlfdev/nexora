@@ -7,6 +7,9 @@
   --nexora-white: #FFFFFF;
   --nexora-accent: #4D7CFE;
   --nexora-accent-dim: rgba(77, 124, 254, 0.15);
+  --nexora-case-orbit: #4D7CFE;
+  --nexora-case-flux: #7C4DFF;
+  --nexora-case-pulse: #FF4D7C;
 }
 
 @theme inline {
@@ -15,6 +18,9 @@
   --color-light: var(--nexora-light);
   --color-white: var(--nexora-white);
   --color-accent: var(--nexora-accent);
+  --color-case-orbit: var(--nexora-case-orbit);
+  --color-case-flux: var(--nexora-case-flux);
+  --color-case-pulse: var(--nexora-case-pulse);
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
 }

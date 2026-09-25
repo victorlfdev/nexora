@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import gsap from "gsap";
 import type Lenis from "lenis";
 
@@ -20,7 +20,7 @@ const cases = [
       { label: "Data Points", value: "2.4M/day" },
       { label: "Uptime", value: "99.97%" },
     ],
-    color: "#4D7CFE",
+    color: "var(--nexora-case-orbit)",
   },
   {
     id: "02",
@@ -33,7 +33,7 @@ const cases = [
       { label: "Time Saved", value: "840hrs/mo" },
       { label: "Accuracy", value: "98.4%" },
     ],
-    color: "#7C4DFF",
+    color: "var(--nexora-case-flux)",
   },
   {
     id: "03",
@@ -46,15 +46,25 @@ const cases = [
       { label: "Transactions", value: "1.2M/day" },
       { label: "Compliance", value: "100%" },
     ],
-    color: "#FF4D7C",
+    color: "var(--nexora-case-pulse)",
   },
 ];
 
 export default function Cases({ lenisRef }: CasesProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
     const ctx = gsap.context(() => {
       const totalWidth =
         wrapperRef.current?.querySelectorAll(".case-card").length ?? 0;
@@ -77,7 +87,7 @@ export default function Cases({ lenisRef }: CasesProps) {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
@@ -97,11 +107,24 @@ export default function Cases({ lenisRef }: CasesProps) {
       </div>
 
       {/* Horizontal scroll wrapper */}
-      <div ref={wrapperRef} className="cases-wrapper flex gap-8 px-6" role="region" aria-label="Case studies carousel">
+      <div
+        ref={wrapperRef}
+        className={`cases-wrapper ${
+          isMobile
+            ? "flex flex-col gap-8 px-6"
+            : "flex gap-8 px-6"
+        }`}
+        role="region"
+        aria-label="Case studies carousel"
+      >
         {cases.map((caseItem) => (
           <div
             key={caseItem.id}
-            className="case-card min-w-[85vw] max-w-[600px] flex-shrink-0 rounded-xl border border-light/10 bg-dark-secondary p-10"
+            className={`case-card ${
+              isMobile
+                ? "w-full rounded-xl border border-light/10 bg-dark-secondary p-6 sm:p-10"
+                : "min-w-[85vw] max-w-[600px] flex-shrink-0 rounded-xl border border-light/10 bg-dark-secondary p-10"
+            }`}
             role="article"
             aria-label={`Case ${caseItem.id}: ${caseItem.name}`}
           >
