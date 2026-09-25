@@ -6,6 +6,7 @@ import type Lenis from "lenis";
 
 interface ProcessProps {
   lenisRef: RefObject<Lenis | null>;
+  isMobile?: boolean;
 }
 
 const scenes = [
@@ -117,11 +118,11 @@ export default function Process({ lenisRef }: ProcessProps) {
       aria-label="Our Process"
     >
       {/* Section header */}
-      <div className="absolute top-12 left-0 right-0 text-center">
-        <span className="font-mono text-xs tracking-[0.3em] text-dark/40">
+      <div className="absolute top-8 left-0 right-0 text-center sm:top-12">
+        <span className="font-mono text-[10px] tracking-[0.3em] text-dark/40 sm:text-xs">
           OUR PROCESS
         </span>
-        <h2 className="mt-4 text-[clamp(2rem,4vw,4rem)] font-bold tracking-tight text-dark">
+        <h2 className="mt-3 text-[clamp(2rem,4vw,4rem)] font-bold tracking-tight text-dark sm:mt-4">
           FROM IDEA TO IMPACT.
         </h2>
       </div>
@@ -131,19 +132,19 @@ export default function Process({ lenisRef }: ProcessProps) {
         <div
           key={scene.number}
           data-scene={i}
-          className="scene absolute inset-0 flex flex-col items-center justify-center opacity-0"
+          className="scene absolute inset-0 flex flex-col items-center justify-center opacity-0 px-6"
           style={{ top: 0 }}
         >
-          <span className="mb-6 font-mono text-6xl font-bold tracking-tight text-accent">
+          <span className="mb-4 font-mono text-5xl font-bold tracking-tight text-accent sm:text-6xl">
             {scene.number}
           </span>
-          <h3 className="mb-4 text-center text-[clamp(2rem,5vw,4rem)] font-bold tracking-tight text-dark">
+          <h3 className="mb-3 text-center text-[clamp(2rem,5vw,4rem)] font-bold tracking-tight text-dark sm:mb-4">
             {scene.title}
           </h3>
-          <p className="mb-2 font-mono text-sm tracking-wider text-dark/60">
+          <p className="mb-1.5 font-mono text-xs tracking-wider text-dark/60 sm:mb-2 sm:text-sm">
             {scene.subtitle}
           </p>
-          <p className="mt-4 max-w-md text-center text-sm leading-relaxed text-dark/40">
+          <p className="mt-2 max-w-sm text-center text-xs leading-relaxed text-dark/40 sm:mt-4 sm:max-w-md sm:text-sm">
             {scene.body}
           </p>
         </div>

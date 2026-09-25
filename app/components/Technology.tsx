@@ -16,13 +16,14 @@ const technologies = [
   "TAILWIND",
 ];
 
-export default function Technology() {
+export default function Technology({ isMobile }: { isMobile?: boolean }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
+    if (isMobile) return;
     const ctx = gsap.context(() => {
       // Title reveal
       gsap.fromTo(

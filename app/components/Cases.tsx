@@ -45,17 +45,9 @@ const cases = [
   },
 ];
 
-export default function Cases() {
+export default function Cases({ isMobile }: { isMobile?: boolean }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   useEffect(() => {
     if (isMobile) return;
@@ -98,11 +90,11 @@ export default function Cases() {
       aria-label="Selected Work"
     >
       {/* Section header */}
-      <div className="px-6 pt-20 pb-8">
+      <div className={`px-6 ${isMobile ? 'pt-16 pb-6' : 'pt-20 pb-8'}`}>
         <span className="font-mono text-xs tracking-[0.3em] text-light/40">
           SELECTED WORK
         </span>
-        <h2 className="mb-20 text-[clamp(2rem,4vw,4rem)] font-bold tracking-tight text-light">
+        <h2 className={`${isMobile ? 'mb-12' : 'mb-20'} text-[clamp(2rem,4vw,4rem)] font-bold tracking-tight text-light`}>
           CASES.
         </h2>
       </div>
@@ -148,11 +140,11 @@ export default function Cases() {
             </p>
 
             {/* Metrics */}
-            <div className="mt-10 grid grid-cols-3 gap-6">
+            <div className={`${isMobile ? 'mt-8 flex flex-col gap-6' : 'mt-10 grid grid-cols-3 gap-6'}`}>
               {caseItem.metrics.map((metric) => (
                 <div key={metric.label}>
                   <div
-                    className="font-bold text-[2rem]"
+                    className={`font-bold ${isMobile ? 'text-[1.5rem]' : 'text-[2rem]'}`}
                     style={{ color: caseItem.color }}
                   >
                     {metric.value}
@@ -166,7 +158,7 @@ export default function Cases() {
 
             {/* Visual placeholder */}
             <div
-              className="mt-8 h-48 w-full rounded-lg"
+              className={`mt-8 w-full rounded-lg ${isMobile ? 'h-40' : 'h-48'}`}
               style={{
                 background: `linear-gradient(135deg, ${caseItem.color}10, ${caseItem.color}05)`,
                 border: `2px solid ${caseItem.color}20`,
@@ -175,7 +167,7 @@ export default function Cases() {
               <div className="flex h-full items-center justify-center">
                 <div className="text-center">
                   <div
-                    className="text-3xl font-bold"
+                    className={`font-bold ${isMobile ? 'text-2xl' : 'text-3xl'}`}
                     style={{ color: caseItem.color }}
                   >
                     {caseItem.name}

@@ -11,8 +11,10 @@ interface PreloaderProps {
 
 export default function Preloader({ onExit }: PreloaderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   useEffect(() => {
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         onComplete: () => {

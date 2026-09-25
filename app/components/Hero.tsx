@@ -6,8 +6,10 @@ import gsap from "gsap";
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const settersRef = useRef<Record<string, any>>({});
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   useEffect(() => {
+    if (isMobile) return;
     const ctx = gsap.context(() => {
       // Cache batched quickSetters — each fires once per frame
       const qs = (target: string | HTMLElement, property: string, unit = "") =>

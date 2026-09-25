@@ -6,6 +6,7 @@ import type Lenis from "lenis";
 
 interface ServicesProps {
   lenisRef: RefObject<Lenis | null>;
+  isMobile?: boolean;
 }
 
 function useIsTouchDevice() {
@@ -50,7 +51,7 @@ const services = [
   },
 ];
 
-export default function Services({ lenisRef }: ServicesProps) {
+export default function Services({ lenisRef, isMobile }: ServicesProps) {
   const isTouch = useIsTouchDevice();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
@@ -93,6 +94,8 @@ export default function Services({ lenisRef }: ServicesProps) {
   );
 
   useEffect(() => {
+    if (isMobile) return;
+
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -126,11 +129,11 @@ export default function Services({ lenisRef }: ServicesProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-dark py-32"
+      className="relative bg-dark py-32 md:py-32"
       aria-label="Our services"
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-20">
+        <div className="mb-12 md:mb-20">
           <span className="font-mono text-xs tracking-[0.3em] text-light/40">
             WHAT WE DO
           </span>
@@ -154,7 +157,7 @@ export default function Services({ lenisRef }: ServicesProps) {
                 tabIndex={0}
                 role="button"
                 aria-label={`${service.title} — ${service.description}`}
-                className={`group flex cursor-pointer items-center justify-between py-10 transition-all duration-300 hover:border-l-2 hover:border-l-accent hover:pl-4 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-dark ${
+                className={`group flex cursor-pointer items-center justify-between py-6 md:py-10 transition-all duration-300 hover:border-l-2 hover:border-l-accent hover:pl-4 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-dark ${
                   focusedIndex === i ? "border-l-2 border-l-accent pl-4" : ""
                 }`}
                 onMouseEnter={() => setHoveredIndex(i)}
@@ -163,11 +166,11 @@ export default function Services({ lenisRef }: ServicesProps) {
                 onBlur={() => setFocusedIndex(null)}
                 onKeyDown={(e) => handleKeyDown(e, i)}
               >
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-4 md:gap-8">
                   <span className="font-mono text-xs tracking-widest text-light/30">
                     {service.number}
                   </span>
-                  <h3 className="text-xl font-bold tracking-tight text-light group-hover:text-accent transition-colors duration-300">
+                  <h3 className="text-base md:text-xl font-bold tracking-tight text-light group-hover:text-accent transition-colors duration-300">
                     {service.title}
                   </h3>
                 </div>
@@ -176,11 +179,20 @@ export default function Services({ lenisRef }: ServicesProps) {
                 </span>
               </div>
 
-              {(isTouch || hoveredIndex === i) && (
-                <div className="absolute right-0 top-1/2 mr-8 -translate-y-1/2 font-mono text-xs tracking-wider text-light/40">
-                  {service.description}
-                </div>
-              )}
+              <div className="md:hidden">
+                {(isTouch || hoveredIndex === i) && (
+                  <div className="pt-3 pb-2 font-mono text-xs tracking-wider text-light/40">
+                    {service.description}
+                  </div>
+                )}
+              </div>
+              <div className="hidden md:block">
+                {(isTouch || hoveredIndex === i) && (
+                  <div className="absolute right-0 top-1/2 mr-8 -translate-y-1/2 font-mono text-xs tracking-wider text-light/40">
+                    {service.description}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>

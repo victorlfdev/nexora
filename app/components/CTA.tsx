@@ -6,12 +6,15 @@ import type Lenis from "lenis";
 
 interface CTAProps {
   lenisRef: RefObject<Lenis | null>;
+  isMobile?: boolean;
 }
 
-export default function CTA({ lenisRef }: CTAProps) {
+export default function CTA({ lenisRef, isMobile }: CTAProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isMobile) return;
+
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;

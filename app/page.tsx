@@ -22,8 +22,18 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
   const lenisRef = useRef<Lenis>(null);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
     // Initialize Lenis smooth scroll
     const lenis = new Lenis({
       duration: 1.2,
@@ -43,7 +53,6 @@ export default function Home() {
     requestAnimationFrame(raf);
 
     // GSAP scroll sync
-    ScrollTrigger.addEventListener("refresh", () => lenis.scrollTo(0, { immediate: true }));
     ScrollTrigger.refresh();
 
     // Preloader duration
@@ -53,7 +62,7 @@ export default function Home() {
       clearTimeout(timer);
       lenis.destroy();
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <main className="relative">
@@ -62,13 +71,13 @@ export default function Home() {
         <>
           <Hero />
           <ComplexityClarity />
-          <Services lenisRef={lenisRef} />
-          <Process lenisRef={lenisRef} />
-          <Cases />
-          <Technology />
-          <About lenisRef={lenisRef} />
-          <CTA lenisRef={lenisRef} />
-          <Footer lenisRef={lenisRef} />
+          <Services lenisRef={lenisRef} isMobile={isMobile} />
+          <Process lenisRef={lenisRef} isMobile={isMobile} />
+          <Cases isMobile={isMobile} />
+          <Technology isMobile={isMobile} />
+          <About lenisRef={lenisRef} isMobile={isMobile} />
+          <CTA lenisRef={lenisRef} isMobile={isMobile} />
+          <Footer lenisRef={lenisRef} isMobile={isMobile} />
         </>
       )}
     </main>

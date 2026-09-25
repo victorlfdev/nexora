@@ -43,6 +43,7 @@ export default function ComplexityClarity() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [chaosPositions] = useState(() => generatePositions(elements.length));
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const rect = sectionRef.current?.getBoundingClientRect();
@@ -54,6 +55,8 @@ export default function ComplexityClarity() {
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
+
     window.addEventListener("mousemove", handleMouseMove);
 
     const ctx = gsap.context(() => {

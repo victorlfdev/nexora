@@ -5,9 +5,10 @@ import type Lenis from "lenis";
 
 interface FooterProps {
   lenisRef: RefObject<Lenis | null>;
+  isMobile?: boolean;
 }
 
-export default function Footer({ lenisRef }: FooterProps) {
+export default function Footer({ lenisRef, isMobile }: FooterProps) {
   const links = [
     { label: "Instagram", href: "#" },
     { label: "LinkedIn", href: "#" },

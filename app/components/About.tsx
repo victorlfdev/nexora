@@ -6,12 +6,14 @@ import type Lenis from "lenis";
 
 interface AboutProps {
   lenisRef: RefObject<Lenis | null>;
+  isMobile?: boolean;
 }
 
-export default function About({ lenisRef }: AboutProps) {
+export default function About({ lenisRef, isMobile }: AboutProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isMobile) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".about-text",
