@@ -36,7 +36,7 @@ const services = [
   },
 ];
 
-export default function Services({ lenisRef }: ServicesProps) {
+export default function Services({ lenisRef: _lenisRef }: ServicesProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -162,7 +162,7 @@ export default function Services({ lenisRef }: ServicesProps) {
               </div>
 
               {hoveredIndex === i && (
-                <div className="absolute right-0 top-1/2 mr-8 -translate-y-1/2 font-mono text-xs tracking-wider text-light/40">
+                <div className="absolute right-0 top-1/2 mr-8 -translate-y-1/2 max-w-[200px] font-mono text-xs tracking-wider text-light/40">
                   {service.description}
                 </div>
               )}

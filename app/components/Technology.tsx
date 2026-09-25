@@ -21,12 +21,18 @@ const technologies = [
   "TAILWIND",
 ];
 
-export default function Technology({ lenisRef }: TechnologyProps) {
+export default function Technology({ lenisRef: _lenisRef }: TechnologyProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       // Title reveal
       gsap.fromTo(
@@ -48,11 +54,9 @@ export default function Technology({ lenisRef }: TechnologyProps) {
       );
 
       // Orbit animation
-      const orbitCenter = { x: 0, y: 0 };
-
       technologies.forEach((tech, i) => {
         const angle = (i / technologies.length) * Math.PI * 2;
-        const radius = 200;
+        const radius = window.innerWidth < 640 ? 110 : 160;
         const el = document.querySelector(`[data-tech="${tech}"]`);
 
         if (el) {
@@ -110,7 +114,7 @@ export default function Technology({ lenisRef }: TechnologyProps) {
       {/* Orbit visualization */}
       <div
         ref={orbitRef}
-        className="relative flex h-96 w-96 items-center justify-center"
+        className="relative mx-auto flex h-72 w-72 sm:h-96 sm:w-96 items-center justify-center"
         style={{
           transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 20}px)`,
         }}
@@ -125,7 +129,7 @@ export default function Technology({ lenisRef }: TechnologyProps) {
         {/* Orbiting technologies */}
         {technologies.map((tech, i) => {
           const angle = (i / technologies.length) * Math.PI * 2;
-          const radius = 160;
+          const radius = window.innerWidth < 640 ? 110 : 160;
           const x = Math.cos(angle) * radius;
           const y = Math.sin(angle) * radius;
 
@@ -144,7 +148,7 @@ export default function Technology({ lenisRef }: TechnologyProps) {
         })}
 
         {/* Orbit ring */}
-        <div className="absolute h-96 w-96 rounded-full border border-dark/5" />
+        <div className="absolute h-72 w-72 sm:h-96 sm:w-96 rounded-full border border-dark/5" />
       </div>
     </section>
   );

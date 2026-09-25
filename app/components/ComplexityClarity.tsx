@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import gsap from "gsap";
 import type Lenis from "lenis";
 
@@ -8,7 +8,7 @@ interface ComplexityClarityProps {
   lenisRef: RefObject<Lenis | null>;
 }
 
-const elements = [
+const elementNames = [
   "API",
   "DATABASE",
   "AI",
@@ -21,10 +21,30 @@ const elements = [
   "MONITORING",
 ];
 
-export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) {
+function generatePositions(count: number) {
+  const positions: { top: number; left: number }[] = [];
+  for (let i = 0; i < count; i++) {
+    positions.push({
+      top: 20 + Math.random() * 60,
+      left: 10 + Math.random() * 80,
+    });
+  }
+  return positions;
+}
+
+export default function ComplexityClarity({ lenisRef: _lenisRef }: ComplexityClarityProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [positions] = useState<{ top: number; left: number }[]>(() =>
+    generatePositions(elementNames.length)
+  );
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -124,13 +144,13 @@ export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) 
 
       {/* Chaotic elements */}
       <div className="relative flex h-96 w-full">
-        {elements.map((el, i) => (
+        {elementNames.map((el, i) => (
           <span
             key={el}
             className="chaos-element absolute font-mono text-xs tracking-widest text-dark/40"
             style={{
-              top: `${20 + Math.random() * 60}%`,
-              left: `${10 + Math.random() * 80}%`,
+              top: `${positions[i]?.top ?? 50}%`,
+              left: `${positions[i]?.left ?? 50}%`,
             }}
           >
             {el}

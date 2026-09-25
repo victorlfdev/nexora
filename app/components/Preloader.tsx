@@ -95,6 +95,8 @@ export default function Preloader() {
   return (
     <div
       ref={containerRef}
+      role="status"
+      aria-live="polite"
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-dark"
     >
       <div className="flex items-center gap-1">

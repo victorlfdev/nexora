@@ -8,7 +8,7 @@ interface CTAProps {
   lenisRef: RefObject<Lenis | null>;
 }
 
-export default function CTA({ lenisRef }: CTAProps) {
+export default function CTA({ lenisRef: _lenisRef }: CTAProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

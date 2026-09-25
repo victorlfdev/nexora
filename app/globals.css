@@ -72,3 +72,19 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Scroll line animation */
+@keyframes scrollLine {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}

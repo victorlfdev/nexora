@@ -8,10 +8,16 @@ interface AboutProps {
   lenisRef: RefObject<Lenis | null>;
 }
 
-export default function About({ lenisRef }: AboutProps) {
+export default function About({ lenisRef: _lenisRef }: AboutProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".about-text",

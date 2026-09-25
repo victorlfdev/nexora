@@ -41,10 +41,16 @@ const scenes = [
   },
 ];
 
-export default function Process({ lenisRef }: ProcessProps) {
+export default function Process({ lenisRef: _lenisRef }: ProcessProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {

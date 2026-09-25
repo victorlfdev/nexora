@@ -8,11 +8,17 @@ interface HeroProps {
   lenisRef: RefObject<Lenis | null>;
 }
 
-export default function Hero({ lenisRef }: HeroProps) {
+export default function Hero({ lenisRef: _lenisRef }: HeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
-  const settersRef = useRef<Record<string, any>>({});
+  const settersRef = useRef<Record<string, (v: number | string | Record<string, unknown>) => void>>({});
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       // Cache batched quickSetters — each fires once per frame
       const qs = (target: string | HTMLElement, property: string, unit = "") =>
@@ -31,7 +37,7 @@ export default function Hero({ lenisRef }: HeroProps) {
       };
       settersRef.current = setters;
 
-      const tl = gsap.timeline({
+      const _tl = gsap.timeline({
         scrollTrigger: {
           trigger: heroRef.current as HTMLElement,
           start: "top top",

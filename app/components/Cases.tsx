@@ -50,7 +50,7 @@ const cases = [
   },
 ];
 
-export default function Cases({ lenisRef }: CasesProps) {
+export default function Cases({ lenisRef: _lenisRef }: CasesProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
