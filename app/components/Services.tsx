@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, type RefObject } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface ServicesProps {
-  lenisRef: RefObject<Lenis | null>;
-}
 
 const services = [
   {
@@ -36,7 +31,7 @@ const services = [
   },
 ];
 
-export default function Services({ lenisRef: _lenisRef }: ServicesProps) {
+export default function Services() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);

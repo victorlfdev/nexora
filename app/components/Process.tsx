@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface ProcessProps {
-  lenisRef: RefObject<Lenis | null>;
-}
 
 const scenes = [
   {
@@ -41,7 +36,7 @@ const scenes = [
   },
 ];
 
-export default function Process({ lenisRef: _lenisRef }: ProcessProps) {
+export default function Process() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

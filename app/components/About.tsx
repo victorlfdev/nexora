@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
 
-interface AboutProps {
-  lenisRef: RefObject<Lenis | null>;
-}
-
-export default function About({ lenisRef: _lenisRef }: AboutProps) {
+export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,7 +58,7 @@ export default function About({ lenisRef: _lenisRef }: AboutProps) {
             key={layer}
             className="absolute inset-0 opacity-[0.02]"
             style={{
-              background: `radial-gradient(circle at ${50 + layer * 10}% ${50 + layer * 5}%, #4D7CFE 0%, transparent 60%)`,
+              background: `radial-gradient(circle at ${50 + layer * 10}% ${50 + layer * 5}%, var(--nexora-accent) 0%, transparent 60%)`,
               transform: `scale(${1 + layer * 0.1})`,
             }}
           />

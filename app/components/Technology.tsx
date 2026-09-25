@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface TechnologyProps {
-  lenisRef: RefObject<Lenis | null>;
-}
 
 const technologies = [
   "NEXT.JS",
@@ -21,7 +16,7 @@ const technologies = [
   "TAILWIND",
 ];
 
-export default function Technology({ lenisRef: _lenisRef }: TechnologyProps) {
+export default function Technology() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });

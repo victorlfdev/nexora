@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
 
-interface HeroProps {
-  lenisRef: RefObject<Lenis | null>;
-}
-
-export default function Hero({ lenisRef: _lenisRef }: HeroProps) {
+export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const settersRef = useRef<Record<string, (v: number | string | Record<string, unknown>) => void>>({});
 
@@ -78,10 +73,10 @@ export default function Hero({ lenisRef: _lenisRef }: HeroProps) {
             // Phase 5 (0.8-1.0): Dark to Light transition
             if (progress >= 0.8) {
               const p = (progress - 0.8) / 0.2;
-              sp.heroBg(gsap.utils.interpolate(["#050505", "#F5F5F2"], p));
-              sp.titleColor(gsap.utils.interpolate(["#F5F5F2", "#050505"], p));
-              sp.subtitleColor(gsap.utils.interpolate(["#F5F5F2", "#050505"], p));
-              sp.techColor(gsap.utils.interpolate(["#F5F5F266", "#05050566"], p));
+              sp.heroBg(gsap.utils.interpolate(["var(--nexora-dark)", "var(--nexora-light)"], p));
+              sp.titleColor(gsap.utils.interpolate(["var(--nexora-light)", "var(--nexora-dark)"], p));
+              sp.subtitleColor(gsap.utils.interpolate(["var(--nexora-light)", "var(--nexora-dark)"], p));
+              sp.techColor(gsap.utils.interpolate(["rgba(245,245,242,0.4)", "rgba(5,5,5,0.4)"], p));
             }
           },
         },

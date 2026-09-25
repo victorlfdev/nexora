@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
 
-interface CTAProps {
-  lenisRef: RefObject<Lenis | null>;
-}
-
-export default function CTA({ lenisRef: _lenisRef }: CTAProps) {
+export default function CTA() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

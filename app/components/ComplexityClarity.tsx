@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface ComplexityClarityProps {
-  lenisRef: RefObject<Lenis | null>;
-}
 
 const elementNames = [
   "API",
@@ -32,7 +27,7 @@ function generatePositions(count: number) {
   return positions;
 }
 
-export default function ComplexityClarity({ lenisRef: _lenisRef }: ComplexityClarityProps) {
+export default function ComplexityClarity() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [positions] = useState<{ top: number; left: number }[]>(() =>
     generatePositions(elementNames.length)

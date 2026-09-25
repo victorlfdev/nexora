@@ -1,13 +1,6 @@
 "use client";
 
-import { type RefObject } from "react";
-import type Lenis from "lenis";
-
-interface FooterProps {
-  lenisRef: RefObject<Lenis | null>;
-}
-
-export default function Footer({ lenisRef: _lenisRef }: FooterProps) {
+export default function Footer() {
   const links = [
     { label: "Instagram", href: "https://instagram.com/nexora" },
     { label: "LinkedIn", href: "https://linkedin.com/company/nexora" },

@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface CasesProps {
-  lenisRef: RefObject<Lenis | null>;
-}
 
 const cases = [
   {
@@ -50,7 +45,7 @@ const cases = [
   },
 ];
 
-export default function Cases({ lenisRef: _lenisRef }: CasesProps) {
+export default function Cases() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
