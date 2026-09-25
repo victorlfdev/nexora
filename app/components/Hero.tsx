@@ -105,7 +105,7 @@ export default function Hero({ lenisRef: _lenisRef }: HeroProps) {
       aria-label="Hero"
     >
       {/* Background grid */}
-      <div className="absolute inset-0 opacity-[0.03]">
+      <div aria-hidden="true" className="absolute inset-0 opacity-[0.03]">
         <div
           className="h-full w-full"
           style={{
@@ -124,7 +124,7 @@ export default function Hero({ lenisRef: _lenisRef }: HeroProps) {
       </div>
 
       {/* Scroll indicator */}
-      <div className="scroll-indicator absolute bottom-12 right-12 z-10 flex flex-col items-center gap-2">
+      <div aria-hidden="true" className="scroll-indicator absolute bottom-12 right-12 z-10 flex flex-col items-center gap-2">
         <span className="font-mono text-[10px] tracking-[0.3em] text-light/40">
           SCROLL TO BEGIN
         </span>
@@ -159,7 +159,7 @@ export default function Hero({ lenisRef: _lenisRef }: HeroProps) {
       </div>
 
       {/* Tech elements */}
-      <div className="tech-elements absolute inset-0 pointer-events-none">
+      <div aria-hidden="true" className="tech-elements absolute inset-0 pointer-events-none">
         {["API", "AI", "WEB", "DATA", "SYSTEMS", "SaaS", "Cloud"].map(
           (tech, i) => {
             const positions = [

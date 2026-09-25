@@ -57,7 +57,7 @@ export default function About({ lenisRef: _lenisRef }: AboutProps) {
       </div>
 
       {/* Abstract depth visualization */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
         {[0, 1, 2, 3].map((layer) => (
           <div
             key={layer}
