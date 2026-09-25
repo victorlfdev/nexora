@@ -61,21 +61,27 @@ export default function Cases() {
     if (isMobile) return;
 
     const ctx = gsap.context(() => {
-      const totalWidth =
-        wrapperRef.current?.querySelectorAll(".case-card").length ?? 0;
+      const cards = wrapperRef.current?.querySelectorAll(".case-card");
+      const totalWidth = cards?.length ?? 0;
+
+      const cardEl = cards?.[0] as HTMLElement;
+      const cardWidth = cardEl?.offsetWidth ?? 0;
+      const computedGap = wrapperRef.current ? parseFloat(getComputedStyle(wrapperRef.current).gap) : 32;
+      const totalScrollWidth = cardWidth * (totalWidth - 1) + computedGap * (totalWidth - 1);
+      const halfCardOffset = cardWidth * 0.05;
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current as HTMLElement,
           start: "top top",
-          end: `+=${window.innerWidth * totalWidth * 0.8}`,
+          end: `+=${totalScrollWidth + halfCardOffset}`,
           pin: true,
           scrub: 1,
         },
       });
 
       tl.to(".cases-wrapper", {
-        xPercent: -75,
+        x: -(totalScrollWidth + halfCardOffset),
         ease: "none",
         duration: 1,
       });
@@ -92,11 +98,11 @@ export default function Cases() {
       aria-label="Selected Work"
     >
       {/* Section header */}
-      <div className="px-6 pt-20 pb-12">
+      <div className="px-6 pt-20 pb-8">
         <span className="font-mono text-xs tracking-[0.3em] text-light/40">
           SELECTED WORK
         </span>
-        <h2 className="mt-4 text-[clamp(2rem,4vw,4rem)] font-bold tracking-tight text-light">
+        <h2 className="mb-20 text-[clamp(2rem,4vw,4rem)] font-bold tracking-tight text-light">
           CASES.
         </h2>
       </div>
@@ -107,7 +113,7 @@ export default function Cases() {
         className={`cases-wrapper ${
           isMobile
             ? "flex flex-col gap-8 px-6"
-            : "flex gap-8 px-6"
+            : "flex gap-8 px-[20vw] pb-5"
         }`}
         role="region"
         aria-label="Case studies carousel"
@@ -117,7 +123,7 @@ export default function Cases() {
             key={caseItem.id}
             className={`case-card ${
               isMobile
-                ? "w-full rounded-xl border border-light/10 bg-dark-secondary p-6 sm:p-10"
+                ? "w-full rounded-xl border border-light/10 bg-dark-secondary p-6"
                 : "min-w-[60vw] max-w-[600px] flex-shrink-0 rounded-xl border border-light/10 bg-dark-secondary p-10"
             }`}
             role="article"
@@ -146,12 +152,12 @@ export default function Cases() {
               {caseItem.metrics.map((metric) => (
                 <div key={metric.label}>
                   <div
-                    className="text-2xl font-bold"
+                    className="font-bold text-[2rem]"
                     style={{ color: caseItem.color }}
                   >
                     {metric.value}
                   </div>
-                  <div className="mt-1 font-mono text-[10px] tracking-widest text-light/30">
+                  <div className="mt-1 font-mono text-[10px] tracking-[0.2em] text-light/30">
                     {metric.label}
                   </div>
                 </div>
@@ -163,7 +169,7 @@ export default function Cases() {
               className="mt-8 h-48 w-full rounded-lg"
               style={{
                 background: `linear-gradient(135deg, ${caseItem.color}10, ${caseItem.color}05)`,
-                border: `1px solid ${caseItem.color}20`,
+                border: `2px solid ${caseItem.color}20`,
               }}
             >
               <div className="flex h-full items-center justify-center">

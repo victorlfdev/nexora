@@ -32,7 +32,7 @@ export default function Hero() {
           start: "top top",
           end: `+=${window.innerHeight * 2}`,
           pin: true,
-          scrub: 1,
+          scrub: 0.5,
           onUpdate: (self) => {
             const progress = self.progress;
             const sp = settersRef.current;
