@@ -25,6 +25,7 @@ export default function Technology({ lenisRef: _lenisRef }: TechnologyProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -79,22 +80,36 @@ export default function Technology({ lenisRef: _lenisRef }: TechnologyProps) {
     ).matches;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      setMousePos({
-        x: (e.clientX - centerX) / centerX,
-        y: (e.clientY - centerY) / centerY,
+      if (rafRef.current !== null) return;
+      rafRef.current = requestAnimationFrame(() => {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        setMousePos({
+          x: (e.clientX - centerX) / centerX,
+          y: (e.clientY - centerY) / centerY,
+        });
+        rafRef.current = null;
       });
+    };
+
+    const handleMouseLeave = () => {
+      setMousePos({ x: 0, y: 0 });
     };
 
     if (!prefersReducedMotion) {
       window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseleave", handleMouseLeave);
     }
 
     return () => {
       ctx.revert();
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
       if (!prefersReducedMotion) {
         window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseleave", handleMouseLeave);
       }
     };
   }, []);

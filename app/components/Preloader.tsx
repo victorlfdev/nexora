@@ -5,7 +5,11 @@ import gsap from "gsap";
 
 const letters = "NEXORA".split("");
 
-export default function Preloader() {
+interface PreloaderProps {
+  onExit?: () => void;
+}
+
+export default function Preloader({ onExit }: PreloaderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,6 +24,7 @@ export default function Preloader() {
               if (containerRef.current) {
                 containerRef.current.style.display = "none";
               }
+              onExit?.();
             },
           });
         },

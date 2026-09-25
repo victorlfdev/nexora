@@ -46,18 +46,14 @@ export default function Home() {
     ScrollTrigger.addEventListener("refresh", () => lenis.scrollTo(0, { immediate: true }));
     ScrollTrigger.refresh();
 
-    // Preloader duration
-    const timer = setTimeout(() => setLoading(false), 2800);
-
     return () => {
-      clearTimeout(timer);
       lenis.destroy();
     };
   }, []);
 
   return (
     <main className="relative">
-      {loading && <Preloader />}
+      {loading && <Preloader onExit={() => setLoading(false)} />}
       {!loading && (
         <>
           <Hero lenisRef={lenisRef} />
