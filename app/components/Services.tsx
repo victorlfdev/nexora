@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, type RefObject } from "react";
 import gsap from "gsap";
+import type Lenis from "lenis";
+
+interface ServicesProps {
+  lenisRef: RefObject<Lenis | null>;
+}
 
 const services = [
   {
@@ -31,7 +36,7 @@ const services = [
   },
 ];
 
-export default function Services() {
+export default function Services({ lenisRef }: ServicesProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -73,6 +78,12 @@ export default function Services() {
   );
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".service-item",
@@ -151,7 +162,7 @@ export default function Services() {
               </div>
 
               {hoveredIndex === i && (
-                <div className="absolute right-0 top-1/2 mr-8 -translate-y-1/2 max-w-[200px] font-mono text-xs tracking-wider text-light/40">
+                <div className="absolute right-0 top-1/2 mr-8 -translate-y-1/2 font-mono text-xs tracking-wider text-light/40">
                   {service.description}
                 </div>
               )}

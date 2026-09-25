@@ -5,11 +5,7 @@ import gsap from "gsap";
 
 const letters = "NEXORA".split("");
 
-interface PreloaderProps {
-  onExit?: () => void;
-}
-
-export default function Preloader({ onExit }: PreloaderProps) {
+export default function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,7 +20,6 @@ export default function Preloader({ onExit }: PreloaderProps) {
               if (containerRef.current) {
                 containerRef.current.style.display = "none";
               }
-              onExit?.();
             },
           });
         },
@@ -100,8 +95,6 @@ export default function Preloader({ onExit }: PreloaderProps) {
   return (
     <div
       ref={containerRef}
-      role="status"
-      aria-live="polite"
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-dark"
     >
       <div className="flex items-center gap-1">

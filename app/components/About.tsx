@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
+import type Lenis from "lenis";
 
-export default function About() {
+interface AboutProps {
+  lenisRef: RefObject<Lenis | null>;
+}
+
+export default function About({ lenisRef }: AboutProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,13 +57,13 @@ export default function About() {
       </div>
 
       {/* Abstract depth visualization */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none">
         {[0, 1, 2, 3].map((layer) => (
           <div
             key={layer}
             className="absolute inset-0 opacity-[0.02]"
             style={{
-              background: `radial-gradient(circle at ${50 + layer * 10}% ${50 + layer * 5}%, var(--nexora-accent) 0%, transparent 60%)`,
+              background: `radial-gradient(circle at ${50 + layer * 10}% ${50 + layer * 5}%, #4D7CFE 0%, transparent 60%)`,
               transform: `scale(${1 + layer * 0.1})`,
             }}
           />

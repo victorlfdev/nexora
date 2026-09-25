@@ -1,12 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
+import type Lenis from "lenis";
 
-export default function CTA() {
+interface CTAProps {
+  lenisRef: RefObject<Lenis | null>;
+}
+
+export default function CTA({ lenisRef }: CTAProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return;
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".cta-title",

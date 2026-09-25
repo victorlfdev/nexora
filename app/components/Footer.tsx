@@ -1,10 +1,17 @@
 "use client";
 
-export default function Footer() {
+import { useRef, type RefObject } from "react";
+import type Lenis from "lenis";
+
+interface FooterProps {
+  lenisRef: RefObject<Lenis | null>;
+}
+
+export default function Footer({ lenisRef }: FooterProps) {
   const links = [
-    { label: "Instagram", href: "https://instagram.com/nexora" },
-    { label: "LinkedIn", href: "https://linkedin.com/company/nexora" },
-    { label: "GitHub", href: "https://github.com/nexora" },
+    { label: "Instagram", href: "#" },
+    { label: "LinkedIn", href: "#" },
+    { label: "GitHub", href: "#" },
     { label: "Email", href: "mailto:hello@nexora.dev" },
   ];
 
@@ -23,7 +30,7 @@ export default function Footer() {
             <p className="mt-1 font-mono text-xs tracking-[0.2em] text-light/30">
               & EXPERIENCES
             </p>
-            <p className="mt-4 font-mono text-xs tracking-wider text-light/30">
+            <p className="mt-4 font-mono text-xs tracking-wider text-light/20">
               SÃO PAULO · BRAZIL
             </p>
           </div>
@@ -46,7 +53,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-light/5">
-          <p className="font-mono text-[10px] tracking-widest text-light/30">
+          <p className="font-mono text-[10px] tracking-widest text-light/20">
             © 2026 NEXORA. ALL RIGHTS RESERVED.
           </p>
         </div>
