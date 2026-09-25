@@ -5,7 +5,7 @@ import gsap from "gsap";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const settersRef = useRef<Record<string, (v: number | string | Record<string, unknown>) => void>>({});
+  const settersRef = useRef<Record<string, any>>({});
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -26,7 +26,7 @@ export default function Hero() {
       };
       settersRef.current = setters;
 
-      const _tl = gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: heroRef.current as HTMLElement,
           start: "top top",
@@ -73,10 +73,10 @@ export default function Hero() {
             // Phase 5 (0.8-1.0): Dark to Light transition
             if (progress >= 0.8) {
               const p = (progress - 0.8) / 0.2;
-              sp.heroBg(gsap.utils.interpolate(["var(--nexora-dark)", "var(--nexora-light)"], p));
-              sp.titleColor(gsap.utils.interpolate(["var(--nexora-light)", "var(--nexora-dark)"], p));
-              sp.subtitleColor(gsap.utils.interpolate(["var(--nexora-light)", "var(--nexora-dark)"], p));
-              sp.techColor(gsap.utils.interpolate(["rgba(245,245,242,0.4)", "rgba(5,5,5,0.4)"], p));
+              sp.heroBg(gsap.utils.interpolate(["#050505", "#F5F5F2"], p));
+              sp.titleColor(gsap.utils.interpolate(["#F5F5F2", "#050505"], p));
+              sp.subtitleColor(gsap.utils.interpolate(["#F5F5F2", "#050505"], p));
+              sp.techColor(gsap.utils.interpolate(["#F5F5F266", "#05050566"], p));
             }
           },
         },

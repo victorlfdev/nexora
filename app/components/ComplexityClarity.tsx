@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import gsap from "gsap";
 import type Lenis from "lenis";
 
@@ -21,8 +21,22 @@ const elements = [
   "MONITORING",
 ];
 
+function generatePositions(count: number) {
+  const positions: { top: string; left: string }[] = [];
+  for (let i = 0; i < count; i++) {
+    positions.push({
+      top: `${20 + Math.random() * 60}%`,
+      left: `${10 + Math.random() * 80}%`,
+    });
+  }
+  return positions;
+}
+
 export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [chaosPositions] = useState<{ top: string; left: string }[]>(() =>
+    generatePositions(elements.length)
+  );
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -129,8 +143,8 @@ export default function ComplexityClarity({ lenisRef }: ComplexityClarityProps) 
             key={el}
             className="chaos-element absolute font-mono text-xs tracking-widest text-dark/40"
             style={{
-              top: `${20 + Math.random() * 60}%`,
-              left: `${10 + Math.random() * 80}%`,
+              top: chaosPositions[i]?.top ?? `${20 + Math.random() * 60}%`,
+              left: chaosPositions[i]?.left ?? `${10 + Math.random() * 80}%`,
             }}
           >
             {el}

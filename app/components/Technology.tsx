@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface TechnologyProps {
-  lenisRef: RefObject<Lenis | null>;
-}
 
 const technologies = [
   "NEXT.JS",
@@ -21,10 +16,11 @@ const technologies = [
   "TAILWIND",
 ];
 
-export default function Technology({ lenisRef }: TechnologyProps) {
+export default function Technology() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -52,7 +48,7 @@ export default function Technology({ lenisRef }: TechnologyProps) {
 
       technologies.forEach((tech, i) => {
         const angle = (i / technologies.length) * Math.PI * 2;
-        const radius = 200;
+        const radius = window.innerWidth < 640 ? 110 : 160;
         const el = document.querySelector(`[data-tech="${tech}"]`);
 
         if (el) {
@@ -75,21 +71,43 @@ export default function Technology({ lenisRef }: TechnologyProps) {
       });
     }, sectionRef);
 
-    // Mouse parallax
+    // Mouse parallax — only when motion is allowed
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     const handleMouseMove = (e: MouseEvent) => {
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      setMousePos({
-        x: (e.clientX - centerX) / centerX,
-        y: (e.clientY - centerY) / centerY,
+      if (rafRef.current !== null) return;
+      rafRef.current = requestAnimationFrame(() => {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        setMousePos({
+          x: (e.clientX - centerX) / centerX,
+          y: (e.clientY - centerY) / centerY,
+        });
+        rafRef.current = null;
       });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const handleMouseLeave = () => {
+      setMousePos({ x: 0, y: 0 });
+    };
+
+    if (!prefersReducedMotion) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseleave", handleMouseLeave);
+    }
 
     return () => {
       ctx.revert();
-      window.removeEventListener("mousemove", handleMouseMove);
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      if (!prefersReducedMotion) {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseleave", handleMouseLeave);
+      }
     };
   }, []);
 
@@ -110,7 +128,7 @@ export default function Technology({ lenisRef }: TechnologyProps) {
       {/* Orbit visualization */}
       <div
         ref={orbitRef}
-        className="relative flex h-96 w-96 items-center justify-center"
+        className="relative mx-auto flex h-72 w-72 sm:h-96 sm:w-96 items-center justify-center"
         style={{
           transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 20}px)`,
         }}
@@ -125,7 +143,7 @@ export default function Technology({ lenisRef }: TechnologyProps) {
         {/* Orbiting technologies */}
         {technologies.map((tech, i) => {
           const angle = (i / technologies.length) * Math.PI * 2;
-          const radius = 160;
+          const radius = window.innerWidth < 640 ? 110 : 160;
           const x = Math.cos(angle) * radius;
           const y = Math.sin(angle) * radius;
 
@@ -144,7 +162,7 @@ export default function Technology({ lenisRef }: TechnologyProps) {
         })}
 
         {/* Orbit ring */}
-        <div className="absolute h-96 w-96 rounded-full border border-dark/5" />
+        <div className="absolute h-72 w-72 sm:h-96 sm:w-96 rounded-full border border-dark/5" />
       </div>
     </section>
   );

@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface CasesProps {
-  lenisRef: RefObject<Lenis | null>;
-}
 
 const cases = [
   {
@@ -50,11 +45,21 @@ const cases = [
   },
 ];
 
-export default function Cases({ lenisRef }: CasesProps) {
+export default function Cases() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
     const ctx = gsap.context(() => {
       const totalWidth =
         wrapperRef.current?.querySelectorAll(".case-card").length ?? 0;
@@ -77,7 +82,7 @@ export default function Cases({ lenisRef }: CasesProps) {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
@@ -97,11 +102,24 @@ export default function Cases({ lenisRef }: CasesProps) {
       </div>
 
       {/* Horizontal scroll wrapper */}
-      <div ref={wrapperRef} className="cases-wrapper flex gap-8 px-6" role="region" aria-label="Case studies carousel">
+      <div
+        ref={wrapperRef}
+        className={`cases-wrapper ${
+          isMobile
+            ? "flex flex-col gap-8 px-6"
+            : "flex gap-8 px-6"
+        }`}
+        role="region"
+        aria-label="Case studies carousel"
+      >
         {cases.map((caseItem) => (
           <div
             key={caseItem.id}
-            className="case-card min-w-[85vw] max-w-[600px] flex-shrink-0 rounded-xl border border-light/10 bg-dark-secondary p-10"
+            className={`case-card ${
+              isMobile
+                ? "w-full rounded-xl border border-light/10 bg-dark-secondary p-6 sm:p-10"
+                : "min-w-[85vw] max-w-[600px] flex-shrink-0 rounded-xl border border-light/10 bg-dark-secondary p-10"
+            }`}
             role="article"
             aria-label={`Case ${caseItem.id}: ${caseItem.name}`}
           >
