@@ -43,7 +43,7 @@ export default function Footer({ lenisRef, isMobile }: FooterProps) {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="font-mono text-xs tracking-widest text-light/40 transition-colors duration-200 hover:text-accent"
+                  className="font-mono text-xs tracking-widest text-light/40 transition-colors duration-200 hover:text-accent px-2"
                 >
                   {link.label}
                 </a>

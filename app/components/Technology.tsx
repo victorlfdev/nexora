@@ -48,6 +48,7 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
   const rafRef = useRef<number | null>(null);
   const prefersReduced = useReducedMotion();
   const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const isMobileView = isMobile || typeof window !== "undefined" ? window.innerWidth < 768 : false;
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (rafRef.current !== null) return;
@@ -63,101 +64,150 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".tech-title",
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current as HTMLElement,
-            start: "top top+=100",
-          },
-        }
-      );
+    const mm = gsap.matchMedia();
 
-      technologies.forEach((tech, i) => {
-        const el = document.querySelector(`[data-tech="${tech.name}"]`);
-        if (el) {
+    mm.add("(min-width: 768px)", () => {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          ".tech-title",
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current as HTMLElement,
+              start: "top top+=100",
+            },
+          }
+        );
+
+        technologies.forEach((tech, i) => {
+          const el = document.querySelector(`[data-tech="${tech.name}"]`);
+          if (el) {
+            gsap.fromTo(
+              el,
+              { opacity: 0, scale: 0.5 },
+              {
+                opacity: 1,
+                scale: 1,
+                duration: 0.5,
+                delay: 0.3 + i * 0.08,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                  trigger: sectionRef.current as HTMLElement,
+                  start: "top top+=100",
+                },
+              }
+            );
+          }
+        });
+
+        if (!prefersReduced) {
+          const globe = globeRef.current;
+          if (globe) {
+            const sphereRadius = 160;
+            const globeRotation = { rotationY: 0 };
+
+            gsap.to(globeRotation, {
+              rotationY: 360,
+              duration: 60,
+              ease: "none",
+              repeat: -1,
+              onUpdate: () => {
+                const rotY = globeRotation.rotationY % 360;
+                nodeRefs.current.forEach((el, name) => {
+                  const tech = technologies.find((t) => t.name === name);
+                  if (!tech) return;
+                  const phi = tech.tilt * Math.PI * 0.6;
+                  const theta = tech.angle;
+                  const bx = Math.cos(phi) * Math.sin(theta) * sphereRadius;
+                  const by = Math.sin(phi) * sphereRadius * 0.7;
+                  const bz = Math.cos(phi) * Math.cos(theta) * sphereRadius;
+                  const [rx, ry, rz] = rotateY(bx, by, bz, rotY);
+                  const scale = 0.6 + (rz / sphereRadius) * 0.4;
+                  const opacity = 0.4 + ((rz / sphereRadius) + 1) * 0.3;
+                  const clampedScale = Math.max(0.5, Math.min(1.2, scale));
+                  const clampedOpacity = Math.max(0.3, Math.min(1, opacity));
+                  gsap.set(el, {
+                    x: rx,
+                    y: ry,
+                    scale: clampedScale,
+                    opacity: clampedOpacity,
+                    zIndex: rz > 0 ? 10 : 1,
+                    force3D: true,
+                  });
+                });
+              },
+            });
+          }
+        }
+      }, sectionRef);
+
+      const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (!mql.matches) {
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseleave", () => setMousePos({ x: 0, y: 0 }));
+      }
+
+      return () => {
+        ctx.revert();
+        if (rafRef.current !== null) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        }
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseleave", () => {});
+      };
+    });
+
+    mm.add("(max-width: 767px)", () => {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          ".tech-title",
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current as HTMLElement,
+              start: "top top+=50",
+            },
+          }
+        );
+
+        const mobileNodes = document.querySelectorAll("[data-tech]");
+        mobileNodes.forEach((el, i) => {
           gsap.fromTo(
             el,
-            { opacity: 0, scale: 0.5 },
+            { opacity: 0, y: 20 },
             {
               opacity: 1,
-              scale: 1,
-              duration: 0.5,
-              delay: 0.3 + i * 0.08,
-              ease: "back.out(1.7)",
+              y: 0,
+              duration: 0.4,
+              delay: 0.2 + i * 0.06,
+              ease: "power2.out",
               scrollTrigger: {
                 trigger: sectionRef.current as HTMLElement,
-                start: "top top+=100",
+                start: "top top+=50",
               },
             }
           );
-        }
-      });
+        });
+      }, sectionRef);
 
-      if (!prefersReduced) {
-        const globe = globeRef.current;
-        if (globe) {
-          const sphereRadius = 160;
-          const globeRotation = { rotationY: 0 };
-
-          gsap.to(globeRotation, {
-            rotationY: 360,
-            duration: 60,
-            ease: "none",
-            repeat: -1,
-            onUpdate: () => {
-              const rotY = globeRotation.rotationY % 360;
-              nodeRefs.current.forEach((el, name) => {
-                const tech = technologies.find((t) => t.name === name);
-                if (!tech) return;
-                const phi = tech.tilt * Math.PI * 0.6;
-                const theta = tech.angle;
-                const bx = Math.cos(phi) * Math.sin(theta) * sphereRadius;
-                const by = Math.sin(phi) * sphereRadius * 0.7;
-                const bz = Math.cos(phi) * Math.cos(theta) * sphereRadius;
-                const [rx, ry, rz] = rotateY(bx, by, bz, rotY);
-                const scale = 0.6 + (rz / sphereRadius) * 0.4;
-                const opacity = 0.4 + ((rz / sphereRadius) + 1) * 0.3;
-                const clampedScale = Math.max(0.5, Math.min(1.2, scale));
-                const clampedOpacity = Math.max(0.3, Math.min(1, opacity));
-                gsap.set(el, {
-                  x: rx,
-                  y: ry,
-                  scale: clampedScale,
-                  opacity: clampedOpacity,
-                  zIndex: rz > 0 ? 10 : 1,
-                  force3D: true,
-                });
-              });
-            },
-          });
-        }
-      }
-    }, sectionRef);
-
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!mql.matches) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseleave", () => setMousePos({ x: 0, y: 0 }));
-    }
+      return () => {
+        ctx.revert();
+      };
+    });
 
     return () => {
-      ctx.revert();
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", () => {});
+      mm.revert();
     };
-  }, [isMobile, prefersReduced, handleMouseMove]);
+  }, [prefersReduced, handleMouseMove]);
 
   const sphereRadius = 160;
 
@@ -188,7 +238,7 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-screen flex-col items-center justify-center bg-dark px-6"
+      className="relative flex min-h-screen flex-col items-center justify-center bg-dark px-4 sm:px-6"
       role="region"
       aria-label="Technology"
     >
@@ -210,17 +260,30 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
         .ring-pulse-delay {
           animation-delay: 2s;
         }
+        @media (max-width: 767px) {
+          .globe-desktop {
+            display: none;
+          }
+        }
+        @media (min-width: 768px) {
+          .globe-mobile {
+            display: none;
+          }
+        }
+        .mobile-node {
+          opacity: 0;
+        }
       `}</style>
 
-      <div className="tech-title mb-20 text-center">
-        <h2 className="text-[clamp(2rem,4vw,4rem)] font-bold tracking-tight text-light">
+      <div className="tech-title mb-8 sm:mb-20 text-center">
+        <h2 className="text-[clamp(1.8rem,4vw,4rem)] font-bold tracking-tight text-light">
           BUILT TO PERFORM.
         </h2>
       </div>
 
       <div
         ref={globeRef}
-        className="relative"
+        className="relative globe-desktop"
         style={{
           width: `${sphereRadius * 2.5}px`,
           height: `${sphereRadius * 2.5}px`,
@@ -236,7 +299,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             transformStyle: "preserve-3d",
           }}
         >
-          {/* Wireframe sphere — latitude lines */}
           {latLines.map((line) => (
             <div
               key={line.label}
@@ -254,7 +316,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             />
           ))}
 
-          {/* Wireframe sphere — longitude lines */}
           {longLines.map((line) => (
             <div
               key={`long-${line.index}`}
@@ -272,7 +333,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             />
           ))}
 
-          {/* Vertical wireframe lines */}
           {[0, 1, 2, 3].map((i) => (
             <div
               key={`vline-${i}`}
@@ -289,7 +349,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             />
           ))}
 
-          {/* Horizontal wireframe line */}
           <div
             className="absolute inset-0"
             style={{
@@ -302,7 +361,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             }}
           />
 
-          {/* Outer ring */}
           <div
             className="absolute inset-0 rounded-full ring-pulse"
             style={{
@@ -314,7 +372,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             }}
           />
 
-          {/* Secondary orbit ring */}
           <div
             className="absolute inset-0 rounded-full ring-pulse ring-pulse-delay"
             style={{
@@ -327,7 +384,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             }}
           />
 
-          {/* Center glow */}
           <div
             className="absolute inset-0 rounded-full"
             style={{
@@ -339,7 +395,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             }}
           />
 
-          {/* Center brand */}
           <div
             className="absolute z-20 flex items-center justify-center"
             style={{
@@ -353,7 +408,6 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             </div>
           </div>
 
-          {/* Technology nodes */}
           {projectedNodes.map((node) => (
             <div
               key={node.name}
@@ -387,6 +441,29 @@ export default function Technology({ isMobile }: { isMobile?: boolean }) {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="globe-mobile relative flex flex-col items-center justify-center gap-4 py-8 sm:hidden">
+        {technologies.map((tech, i) => (
+          <div
+            key={tech.name}
+            data-tech={tech.name}
+            className="mobile-node flex items-center gap-2"
+          >
+            <div
+              className="rounded-full"
+              style={{
+                width: "8px",
+                height: "8px",
+                background: "rgba(77,124,254,0.9)",
+                boxShadow: "0 0 6px rgba(77,124,254,0.6)",
+              }}
+            />
+            <span className="font-mono text-xs tracking-widest text-light/60">
+              {tech.name}
+            </span>
+          </div>
+        ))}
       </div>
     </section>
   );

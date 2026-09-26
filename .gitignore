@@ -63,3 +63,9 @@ mcp-server-error.log
 .agents/skills/gsap-performance/SKILL.md
 .agents/skills/gsap-frameworks/SKILL.md
 skills-lock.json
+.activeframe.txt
+.lenis_body.txt
+.lenis_config.txt
+.lenis_html.txt
+.lenis_init.txt
+.lenis_search.txt

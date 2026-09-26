@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import Particles from "./Particles";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -102,6 +103,22 @@ export default function Hero() {
       role="region"
       aria-label="Hero"
     >
+      {/* Particles background */}
+      <div aria-hidden="true" className="absolute inset-0">
+        <Particles
+          particleCount={150}
+          particleSpread={8}
+          speed={0.05}
+          moveParticlesOnHover={true}
+          particleHoverFactor={0.5}
+          particleBaseSize={80}
+          sizeRandomness={0.5}
+          disableRotation={false}
+          pixelRatio={typeof window !== "undefined" ? window.devicePixelRatio : 1}
+          className="opacity-60"
+        />
+      </div>
+
       {/* Background grid */}
       <div aria-hidden="true" className="absolute inset-0 opacity-[0.03]">
         <div
@@ -162,7 +179,7 @@ export default function Hero() {
           (tech, i) => {
             const positions = [
               { top: "15%", left: "10%" },
-              { top: "25%", right: "15%" },
+              { top: "45%", right: "10%" },
               { top: "60%", left: "8%" },
               { top: "70%", right: "12%" },
               { top: "40%", left: "5%" },
