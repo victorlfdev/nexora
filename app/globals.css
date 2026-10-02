@@ -34,7 +34,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-display);
-  background: var(--nexora-dark);
+  background: var(--nexora-light);
   color: var(--nexora-light);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
