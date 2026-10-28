@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, type CSSProperties } from "react";
 import gsap from "gsap";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 const cases = [
   {
@@ -15,7 +16,7 @@ const cases = [
       { label: "Data Points", value: "2.4M/day" },
       { label: "Uptime", value: "99.97%" },
     ],
-    color: "#4D7CFE",
+    color: "var(--nexora-case-orbit)",
   },
   {
     id: "02",
@@ -28,7 +29,7 @@ const cases = [
       { label: "Time Saved", value: "840hrs/mo" },
       { label: "Accuracy", value: "98.4%" },
     ],
-    color: "#7C4DFF",
+    color: "var(--nexora-case-flux)",
   },
   {
     id: "03",
@@ -41,144 +42,85 @@ const cases = [
       { label: "Transactions", value: "1.2M/day" },
       { label: "Compliance", value: "100%" },
     ],
-    color: "#FF4D7C",
+    color: "var(--nexora-case-pulse)",
   },
 ];
 
-export default function Cases({ isMobile }: { isMobile?: boolean }) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+function animateCases(element: HTMLElement) {
+  element.classList.add("cases-animated");
+  const wrapper = element.querySelector<HTMLElement>(".cases-wrapper");
+  if (!wrapper) return;
+  const distance = () => Math.max(0, wrapper.scrollWidth - element.clientWidth);
+  gsap.to(wrapper, {
+    x: () => -distance(),
+    ease: "none",
+    scrollTrigger: {
+      trigger: element, start: "top top", end: () => `+=${distance()}`,
+      pin: true, scrub: 0.5, invalidateOnRefresh: true,
+    },
+  });
+  return () => element.classList.remove("cases-animated");
+}
 
-  useEffect(() => {
-    if (isMobile) return;
+function ProductPreview({ name, metrics }: { name: string; metrics: { label: string; value: string }[] }) {
+  return (
+    <div className="case-preview mt-7" aria-hidden="true">
+      <div className="mb-5 flex items-center justify-between border-b border-light/15 pb-3">
+        <span className="text-xs font-bold tracking-wider">{name} <span className="font-normal text-light/60">/ Overview</span></span>
+        <span className="font-mono text-[10px] text-light/60">DEMO</span>
+      </div>
+      {name === "ORBIT" ? (
+        <div>
+          <div className="mb-3 flex items-baseline justify-between gap-2"><span className="text-xs text-light/70">Revenue growth</span><span className="font-mono text-sm" style={{ color: "var(--case-color)" }}>{metrics[0].value}</span></div>
+          <div className="preview-bars">{[28, 40, 34, 55, 48, 72, 64, 84, 78, 100].map((height, index) => <span key={index} style={{ height: `${height}%` }} />)}</div>
+        </div>
+      ) : name === "FLUX" ? (
+        <div className="flex flex-wrap items-center gap-2 py-3">
+          {["Trigger", "AI model", "Review", "Deliver"].map((label, index) => (
+            <div key={label} className="flex items-center gap-2">
+              {index > 0 ? <span className="text-light/60">→</span> : null}
+              <span className="border border-light/20 px-3 py-3 text-xs" style={{ color: "var(--case-color)" }}>{label}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {["Onboarding", "Compliance", "Transactions"].map((label) => <div key={label} className="flex items-center justify-between border-b border-light/10 pb-2 text-xs"><span className="text-light/70">{label}</span><span style={{ color: "var(--case-color)" }}>Active</span></div>)}
+        </div>
+      )}
+    </div>
+  );
+}
 
-    const ctx = gsap.context(() => {
-      const cards = wrapperRef.current?.querySelectorAll(".case-card");
-      const totalWidth = cards?.length ?? 0;
-
-      const cardEl = cards?.[0] as HTMLElement;
-      const cardWidth = cardEl?.offsetWidth ?? 0;
-      const computedGap = wrapperRef.current ? parseFloat(getComputedStyle(wrapperRef.current).gap) : 32;
-      const totalScrollWidth = cardWidth * (totalWidth - 1) + computedGap * (totalWidth - 1);
-      const halfCardOffset = cardWidth * 0.05;
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current as HTMLElement,
-          start: "top top",
-          end: `+=${totalScrollWidth + halfCardOffset}`,
-          pin: true,
-          scrub: 1,
-        },
-      });
-
-      tl.to(".cases-wrapper", {
-        x: -(totalScrollWidth + halfCardOffset),
-        ease: "none",
-        duration: 1,
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [isMobile]);
+export default function Cases() {
+  const sectionRef = useRef<HTMLElement>(null);
+  useScrollAnimation(sectionRef, animateCases, "(min-width: 1024px) and (min-height: 800px) and (prefers-reduced-motion: no-preference)");
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-dark overflow-hidden"
-      role="region"
-      aria-label="Selected Work"
-    >
-      {/* Section header */}
-      <div className={`px-6 ${isMobile ? 'pt-16 pb-6' : 'pt-20 pb-8'}`}>
-        <span className="font-mono text-xs tracking-[0.3em] text-light/40">
-          SELECTED WORK
-        </span>
-        <h2 className={`${isMobile ? 'mb-12' : 'mb-20'} text-[clamp(2rem,4vw,4rem)] font-bold tracking-tight text-light`}>
-          CASES.
-        </h2>
+    <section id="work" ref={sectionRef} className="relative overflow-hidden bg-dark pt-16 md:pt-20" aria-labelledby="work-heading">
+      <div className="mx-auto max-w-5xl px-6 pb-8">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h2 id="work-heading" className="text-3xl font-bold tracking-tight md:text-5xl">SELECTED WORK.</h2>
+          <span className="font-mono text-xs text-light/60">ORBIT / FLUX / PULSE</span>
+        </div>
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-light/65">Concept projects. Products and metrics below are illustrative.</p>
       </div>
-
-      {/* Horizontal scroll wrapper */}
-      <div
-        ref={wrapperRef}
-        className={`cases-wrapper ${
-          isMobile
-            ? "flex flex-col gap-8 px-6"
-            : "flex gap-8 px-[20vw] pb-5"
-        }`}
-        role="region"
-        aria-label="Case studies carousel"
-      >
+      <div className="cases-wrapper">
         {cases.map((caseItem) => (
-          <div
-            key={caseItem.id}
-            className={`case-card ${
-              isMobile
-                ? "w-full rounded-xl border border-light/10 bg-dark-secondary p-6"
-                : "min-w-[60vw] max-w-[600px] flex-shrink-0 rounded-xl border border-light/10 bg-dark-secondary p-10"
-            }`}
-            role="article"
-            aria-label={`Case ${caseItem.id}: ${caseItem.name}`}
-          >
-            {/* Case number */}
-            <span className="font-mono text-xs tracking-[0.3em] text-light/30">
-              CASE {caseItem.id}
-            </span>
-
-            {/* Case name */}
-            <h3 className="mt-4 text-4xl font-bold tracking-tight text-light">
-              {caseItem.name}
-            </h3>
-            <p className="mt-2 font-mono text-xs tracking-wider text-light/40">
-              {caseItem.tag}
-            </p>
-
-            {/* Description */}
-            <p className="mt-8 leading-relaxed text-light/60">
-              {caseItem.description}
-            </p>
-
-            {/* Metrics */}
-            <div className={`${isMobile ? 'mt-8 flex flex-col gap-6' : 'mt-10 grid grid-cols-3 gap-6'}`}>
+          <article key={caseItem.id} className="case-card rounded-xl border border-light/15 bg-dark-secondary p-6 md:p-8" aria-labelledby={`case-${caseItem.id}`} style={{ "--case-color": caseItem.color } as CSSProperties}>
+            <h3 id={`case-${caseItem.id}`} className="text-3xl font-bold tracking-tight md:text-4xl">{caseItem.name}</h3>
+            <p className="mt-2 text-sm text-light/70">{caseItem.tag}</p>
+            <p className="mt-5 max-w-2xl text-sm leading-relaxed text-light/75">{caseItem.description}</p>
+            <dl className="mt-6 grid grid-cols-1 gap-4 min-[400px]:grid-cols-3">
               {caseItem.metrics.map((metric) => (
-                <div key={metric.label}>
-                  <div
-                    className={`font-bold ${isMobile ? 'text-[1.5rem]' : 'text-[2rem]'}`}
-                    style={{ color: caseItem.color }}
-                  >
-                    {metric.value}
-                  </div>
-                  <div className="mt-1 font-mono text-[10px] tracking-[0.2em] text-light/30">
-                    {metric.label}
-                  </div>
+                <div key={metric.label} className="min-w-0">
+                  <dt className="text-xs leading-relaxed text-light/65">{metric.label}</dt>
+                  <dd className="preview-metric mt-1 text-xl font-bold sm:text-2xl" style={{ color: "var(--case-color)" }}>{metric.value}</dd>
                 </div>
               ))}
-            </div>
-
-            {/* Visual placeholder */}
-            <div
-              className={`mt-8 w-full rounded-lg ${isMobile ? 'h-40' : 'h-48'}`}
-              style={{
-                background: `linear-gradient(135deg, ${caseItem.color}10, ${caseItem.color}05)`,
-                border: `2px solid ${caseItem.color}20`,
-              }}
-            >
-              <div className="flex h-full items-center justify-center">
-                <div className="text-center">
-                  <div
-                    className={`font-bold ${isMobile ? 'text-2xl' : 'text-3xl'}`}
-                    style={{ color: caseItem.color }}
-                  >
-                    {caseItem.name}
-                  </div>
-                  <div className="mt-2 font-mono text-[10px] tracking-widest text-light/20">
-                    PRODUCT PREVIEW
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            </dl>
+            <ProductPreview name={caseItem.name} metrics={caseItem.metrics} />
+          </article>
         ))}
       </div>
     </section>

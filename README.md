@@ -1,136 +1,71 @@
 # NEXORA — Digital Systems & Experiences
 
-A high-impact landing page for NEXORA, a fictional Brazilian software house positioned at the intersection of software engineering, creative technology, and digital experiences.
+Portfolio concept for a fictional Brazilian software house, built with Next.js App Router, TypeScript, React, Tailwind CSS v4, GSAP, Lenis and OGL. ORBIT, FLUX and PULSE are illustrative projects; their metrics are demo data.
 
-## Overview
+## Run locally
 
-NEXORA differentiates through solid engineering behind memorable digital experiences. The brand sits between a traditional software house and a creative agency — a partner that transforms complex ideas into extraordinary digital products.
-
-This page serves as both a marketing surface and a portfolio demonstration of engineering + motion craft.
-
-## Tech Stack
-
-- **Framework:** Next.js 16 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS v4
-- **Animations:** GSAP (with ScrollTrigger)
-- **Smooth Scroll:** Lenis
-- **Fonts:** Space Grotesk (display), Space Mono (labels/system elements)
-- **Testing:** Playwright
-
-## Sections
-
-| Section | Description |
-|---|---|
-| Preloader | Animated loading screen |
-| Hero | Full-screen intro with brand positioning |
-| Complexity → Clarity | Narrative arc: problem → solution |
-| Services | Interactive services list with hover reveals |
-| Process | Pinned scroll-driven process (5 scenes) |
-| Cases | Horizontal scroll gallery (3 fictional case studies) |
-| Technology | Tech stack / capabilities showcase |
-| About | Company info, team, location |
-| CTA | Call-to-action |
-| Footer | Contact, social links, legal |
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-
-### Installation
+Requires Node.js 20.9 or newer and npm.
 
 ```bash
-npm install
-```
-
-### Development
-
-```bash
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the page.
+Open [localhost:3000](http://localhost:3000).
 
-### Build
+## Production and validation
 
 ```bash
+npm run lint
 npm run build
+npm test
+npm audit
 ```
 
-### Production
+Playwright starts the production server automatically if one is not already running. Build before testing so the tests exercise the latest source. The suite covers desktop, tablet and mobile, keyboard interaction, fragment navigation, JavaScript-disabled rendering, reduced motion, animation cleanup on resize, and automated WCAG A/AA checks with axe. Desktop-only lifecycle checks are skipped on the other devices.
 
-```bash
-npm start
+Run `npm start` to preview the production build. Use `npm run typecheck` for a separate TypeScript check after Next.js has generated its route types.
+
+## Experience
+
+- All page content is rendered into the initial HTML. There is no blocking preloader.
+- Header navigation and hero actions link to services, work, about and contact.
+- Service disclosures use native `details` and `summary`, supporting touch, keyboard and JavaScript-disabled browsers.
+- Desktop scroll timelines retain the dark-to-light transition, five process scenes and horizontal portfolio.
+- On narrow screens, short viewports or reduced-motion preferences, the sections return to their natural document flow.
+- The horizontal portfolio requires at least 1024px width and 800px height. Other pinned effects require 768px width and 650px height.
+- GSAP media queries revert styles and pins when viewport or motion preferences change.
+- Lenis uses the GSAP ticker, with cleanup on unmount. Fonts and service disclosures refresh scroll positions.
+- The decorative WebGL background loads separately, skips mobile/reduced-motion devices, pauses offscreen and in hidden tabs, and releases its resources on cleanup. The page works without WebGL.
+- Typography uses locally served Space Grotesk and Space Mono through `next/font`.
+- Semantic landmarks, a skip link, visible keyboard focus and readable secondary text support accessibility.
+
+## Project structure
+
+```text
+app/
+  page.tsx                       Server-rendered page composition
+  layout.tsx                     Fonts and sharing metadata
+  globals.css                    Brand tokens and responsive layouts
+  hooks/useScrollAnimation.ts    Scoped GSAP media-query lifecycle
+  components/
+    Header.tsx                   Section navigation
+    SmoothScroll.tsx             Lenis and scroll position coordination
+    Hero.tsx                     Intro and primary actions
+    ComplexityClarity.tsx        Transformation narrative
+    Services.tsx                 Native service disclosures
+    Process.tsx                  Five-stage process
+    Cases.tsx                    Illustrative portfolio and product previews
+    Technology.tsx               Stack and decorative globe
+    About.tsx                    Positioning
+    CTA.tsx                      Contact action
+    Footer.tsx                   Internal navigation and contact
+    Particles.tsx                Optional WebGL background
+tests/homepage.spec.ts            Browser regression and accessibility tests
 ```
 
-## Project Structure
+## Brand and content
 
-```
-nexora-landing/
-├── app/
-│   ├── components/          # Section components
-│   │   ├── About.tsx
-│   │   ├── CTA.tsx
-│   │   ├── Cases.tsx
-│   │   ├── ComplexityClarity.tsx
-│   │   ├── Footer.tsx
-│   │   ├── Hero.tsx
-│   │   ├── Preloader.tsx
-│   │   ├── Process.tsx
-│   │   ├── Services.tsx
-│   │   └── Technology.tsx
-│   ├── globals.css          # Global styles + Tailwind
-│   ├── layout.tsx           # Root layout (fonts, metadata)
-│   └── page.tsx             # Main page (scroll orchestration)
-├── public/                  # Static assets
-├── tests/                   # Playwright E2E tests
-├── package.json
-├── tsconfig.json
-└── next.config.ts
-```
+The existing dark-to-light identity uses obsidian `#050505`, warm white `#F5F5F2`, and electric blue `#4D7CFE`. Case accents are adjusted for text contrast. The site content remains in English.
 
-## Design System
-
-### Colors
-
-| Token | Value | Usage |
-|---|---|---|
-| Dark | `#050505` | Primary background |
-| Dark Secondary | `#0B0B0B` | Cards, surfaces |
-| Light | `#F5F5F2` | Primary text |
-| White | `#FFFFFF` | Headlines, accents |
-| Accent | `#4D7CFE` | Interactive states, data, technology indicators |
-
-### Typography
-
-- **Display:** Space Grotesk (weights 400–700)
-- **Monospace:** Space Mono (weights 400, 700) — labels, numbering, system elements
-
-### Brand
-
-- **Name:** NEXORA — `Digital Systems & Experiences`
-- **Tagline:** "We build what comes next."
-- **Location:** São Paulo · Brazil
-
-## Principles
-
-1. **Show, don't tell.** The page experience itself demonstrates NEXORA's capabilities.
-2. **Dark to Light.** The narrative arc mirrors the product journey: complexity → clarity.
-3. **Engineering as craft.** Motion and interaction are deliberate, not decorative.
-4. **Premium restraint.** The accent color appears only to communicate interaction, technology, or data.
-5. **Realism over fantasy.** Fictional cases look like real products; copy reads as if the company exists.
-
-## Accessibility
-
-- Scroll animations respect `prefers-reduced-motion`
-- All content remains readable without animation
-- Keyboard navigation works for services list and case gallery
-
-## Testing
-
-```bash
-npx playwright test
-```
-
+The contact action opens an email application at `hello@nexora.dev`; there is no backend contact form or verified delivery integration. Configure a real contact address and real project data before using this portfolio concept commercially.

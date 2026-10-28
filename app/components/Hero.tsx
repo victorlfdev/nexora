@@ -1,207 +1,59 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
-import Particles from "./Particles";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import ArrowIcon from "./ArrowIcon";
+
+const Particles = dynamic(() => import("./Particles"), { ssr: false });
+
+function animateHero(element: HTMLElement) {
+  const timeline = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: {
+      trigger: element,
+      start: "top top",
+      end: () => `+=${window.innerHeight}`,
+      pin: true,
+      scrub: 0.5,
+      invalidateOnRefresh: true,
+    },
+  });
+  // Timelines restore every property when reversing or jumping to an anchor.
+  timeline.to(".hero-copy", { y: -45, opacity: 0.15, scale: 0.96, duration: 1 }, 0)
+    .to(".scroll-indicator", { opacity: 0, duration: 0.25 }, 0)
+    .to(".hero-surface", { backgroundColor: "#F5F5F2", duration: 0.35 }, 0.65)
+    .to(".hero-copy", { opacity: 0, duration: 0.35 }, 0.65);
+}
 
 export default function Hero() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const settersRef = useRef<Record<string, any>>({});
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-  useEffect(() => {
-    if (isMobile) return;
-    const ctx = gsap.context(() => {
-      // Cache batched quickSetters — each fires once per frame
-      const qs = (target: string | HTMLElement, property: string, unit = "") =>
-        gsap.quickSetter(target, property, unit) as (v: number | string | Record<string, unknown>) => void;
-      const setters: Record<string, (v: number | string | Record<string, unknown>) => void> = {
-        title: qs(".hero-title", "css"),
-        line1: qs(".hero-title .line-1", "css"),
-        line2: qs(".hero-title .line-2", "css"),
-        line3: qs(".hero-title .line-3", "css"),
-        subtitle: qs(".hero-subtitle", "css"),
-        scrollInd: qs(".scroll-indicator", "opacity"),
-        heroBg: qs(heroRef.current as HTMLElement, "backgroundColor"),
-        titleColor: qs(".hero-title", "color"),
-        subtitleColor: qs(".hero-subtitle", "color"),
-        techColor: qs(".tech-elements .tech-item", "color"),
-      };
-      settersRef.current = setters;
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: heroRef.current as HTMLElement,
-          start: "top top",
-          end: `+=${window.innerHeight * 2}`,
-          pin: true,
-          scrub: 0.5,
-          onUpdate: (self) => {
-            const progress = self.progress;
-            const sp = settersRef.current;
-
-            // Phase 0 (0-0.05): Subtitle disappears right after scroll begins
-            if (progress < 0.05) {
-              const p = progress / 0.05;
-              sp.subtitle({ opacity: 1 - p });
-            }
-
-            // Phase 1 (0.05-0.2): Title grows, tech elements appear
-            if (progress >= 0.05 && progress < 0.2) {
-              const p = (progress - 0.05) / 0.15;
-              sp.title({ scale: 1 + p * 0.3, opacity: 1 });
-              const techItems = document.querySelectorAll(".tech-elements .tech-item");
-              for (const el of Array.from(techItems)) {
-                const alpha = Math.round(p * 0.8 * 255);
-                (el as HTMLElement).style.opacity = String(p);
-                (el as HTMLElement).style.color = `rgba(245,245,242,${(alpha / 255).toFixed(2)})`;
-                (el as HTMLElement).style.transform = `translate(-50%, -50%) translateY(${-20 * (1 - p)}px)`;
-              }
-            }
-
-            // Phase 2 (0.2-0.4): Words separate
-            if (progress >= 0.2 && progress < 0.4) {
-              const p = (progress - 0.2) / 0.2;
-              sp.line1({ x: -p * 60, opacity: 1 - p * 0.5 });
-              sp.line2({ x: p * 60, opacity: 1 - p * 0.5 });
-              sp.line3({ y: p * 40, opacity: 1 - p * 0.8 });
-            }
-
-            // Phase 4 (0.6-0.8): Convergence
-            if (progress >= 0.6 && progress < 0.8) {
-              const p = (progress - 0.6) / 0.2;
-              sp.title({ opacity: 1 - p, scale: 1.3 - p * 0.3 });
-              sp.scrollInd(1 - p * 2);
-            }
-
-            // Phase 5 (0.8-1.0): Dark to Light transition
-            if (progress >= 0.8) {
-              const p = (progress - 0.8) / 0.2;
-              sp.heroBg(gsap.utils.interpolate(["#050505", "#F5F5F2"], p));
-              sp.titleColor(gsap.utils.interpolate(["#F5F5F2", "#050505"], p));
-              sp.subtitleColor(gsap.utils.interpolate(["#F5F5F2", "#050505"], p));
-              sp.techColor(gsap.utils.interpolate(["#F5F5F266", "#05050566"], p));
-            }
-          },
-        },
-      });
-
-      // Initial state
-      gsap.set(".hero-title .line-1, .hero-title .line-2, .hero-title .line-3", {
-        opacity: 1,
-      });
-      gsap.set(".tech-elements .tech-item", { opacity: 0 });
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
+  const heroRef = useRef<HTMLElement>(null);
+  useScrollAnimation(heroRef, animateHero);
 
   return (
-    <section
-      ref={heroRef}
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-dark"
-      role="region"
-      aria-label="Hero"
-    >
-      {/* Particles background */}
-      <div aria-hidden="true" className="absolute inset-0">
-        <Particles
-          particleCount={150}
-          particleSpread={8}
-          speed={0.05}
-          moveParticlesOnHover={true}
-          particleHoverFactor={0.5}
-          particleBaseSize={80}
-          sizeRandomness={0.5}
-          disableRotation={false}
-          pixelRatio={typeof window !== "undefined" ? window.devicePixelRatio : 1}
-          className="opacity-60"
-        />
+    <section id="top" ref={heroRef} className="hero relative flex min-h-svh items-center justify-center overflow-hidden bg-dark px-6 pb-28 pt-36" aria-labelledby="hero-heading">
+      <div className="hero-surface absolute inset-0 bg-dark" aria-hidden="true" />
+      <div className="particle-layer pointer-events-none absolute inset-0" aria-hidden="true">
+        <Particles particleCount={100} particleSpread={8} speed={0.035} particleBaseSize={65} className="opacity-50" />
       </div>
-
-      {/* Background grid */}
-      <div aria-hidden="true" className="absolute inset-0 opacity-[0.03]">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(245,245,242,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(245,245,242,0.1) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-      </div>
-
-      {/* Brand mark */}
-      <div className="absolute top-12 left-12 z-10">
-        <span className="font-mono text-xs tracking-[0.3em] text-light/40">
-          NEXORA
-        </span>
-      </div>
-
-      {/* Scroll indicator */}
-      <div aria-hidden="true" className="scroll-indicator absolute bottom-12 right-12 z-10 flex flex-col items-center gap-2">
-        <span className="font-mono text-[10px] tracking-[0.3em] text-light/40">
-          SCROLL TO BEGIN
-        </span>
-        <div className="mt-2 h-8 w-[1px] bg-light/20">
-          <div
-            className="h-full w-full bg-accent"
-            style={{
-              animation: "scrollLine 2s ease-in-out infinite",
-            }}
-          />
+      <div className="hero-copy relative z-10 mx-auto w-full max-w-6xl text-center">
+        <h1 id="hero-heading" className="hero-title font-bold tracking-tight text-light">
+          <span className="line-1 block">WE BUILD WHAT</span>
+          <span className="line-2 mt-2 block">COMES</span>
+          <span className="line-3 mt-2 block text-accent">NEXT.</span>
+        </h1>
+        <p className="hero-subtitle mt-8 text-sm text-light/70 md:text-base">Digital products · Software · AI</p>
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+          <a href="#work" className="primary-link">Explore our work <ArrowIcon /></a>
+          <a href="#contact" className="secondary-link">Start a project <ArrowIcon /></a>
         </div>
       </div>
-
-      {/* Main title */}
-      <h1 className="hero-title relative z-10 text-center">
-        <div className="line-1 text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] tracking-tight text-light">
-          WE BUILD WHAT
-        </div>
-        <div className="line-2 mt-2 text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] tracking-tight text-light">
-          COMES
-        </div>
-        <div className="line-3 mt-2 text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] tracking-tight text-accent">
-          NEXT.
-        </div>
-      </h1>
-
-      {/* Subtitle */}
-      <div className="hero-subtitle mt-8 text-center">
-        <p className="font-mono text-sm tracking-wider text-light/60">
-          Digital products · Software · AI
-        </p>
-      </div>
-
-      {/* Tech elements */}
-      <div aria-hidden="true" className="tech-elements absolute inset-0 pointer-events-none">
-        {["API", "AI", "WEB", "DATA", "SYSTEMS", "SaaS", "Cloud"].map(
-          (tech, i) => {
-            const positions = [
-              { top: "15%", left: "10%" },
-              { top: "45%", right: "10%" },
-              { top: "60%", left: "8%" },
-              { top: "70%", right: "12%" },
-              { top: "40%", left: "5%" },
-              { top: "80%", left: "20%" },
-              { top: "20%", right: "8%" },
-            ];
-            const pos = positions[i];
-            return (
-              <span
-                key={tech}
-                className="tech-item absolute font-mono text-xs tracking-widest text-light/0"
-                style={{
-                  ...pos,
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                {tech}
-              </span>
-            );
-          }
-        )}
-      </div>
+      <a href="#transformation" className="scroll-indicator absolute bottom-8 left-6 z-10 flex min-h-11 items-center gap-4 text-xs text-light/70 md:bottom-10 md:left-12">
+        <span className="scroll-track" aria-hidden="true"><span /></span>
+        Scroll to explore
+      </a>
+      <span className="absolute bottom-12 right-12 hidden font-mono text-xs text-light/60 md:block">São Paulo · Working globally</span>
     </section>
   );
 }

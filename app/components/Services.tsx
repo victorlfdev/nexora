@@ -1,199 +1,26 @@
-"use client";
-
-import { useEffect, useRef, useState, useCallback, type RefObject } from "react";
-import gsap from "gsap";
-import type Lenis from "lenis";
-
-interface ServicesProps {
-  lenisRef: RefObject<Lenis | null>;
-  isMobile?: boolean;
-}
-
-function useIsTouchDevice() {
-  const [isTouch, setIsTouch] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
-    setIsTouch(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-
-  return isTouch;
-}
-
 const services = [
-  {
-    number: "01",
-    title: "DIGITAL PRODUCTS",
-    description: "SaaS platforms, internal systems, web applications",
-  },
-  {
-    number: "02",
-    title: "WEB EXPERIENCES",
-    description: "Landing pages, marketing sites, interactive experiences",
-  },
-  {
-    number: "03",
-    title: "AI & AUTOMATION",
-    description: "Machine learning, workflow automation, intelligent systems",
-  },
-  {
-    number: "04",
-    title: "SYSTEMS & APIs",
-    description: "Backend architecture, REST/GraphQL, microservices",
-  },
-  {
-    number: "05",
-    title: "DATA & DASHBOARDS",
-    description: "Analytics, visualization, real-time monitoring",
-  },
+  { number: "01", title: "DIGITAL PRODUCTS", description: "SaaS platforms, internal systems, web applications" },
+  { number: "02", title: "WEB EXPERIENCES", description: "Landing pages, marketing sites, interactive experiences" },
+  { number: "03", title: "AI & AUTOMATION", description: "Machine learning, workflow automation, intelligent systems" },
+  { number: "04", title: "SYSTEMS & APIs", description: "Backend architecture, REST/GraphQL, microservices" },
+  { number: "05", title: "DATA & DASHBOARDS", description: "Analytics, visualization, real-time monitoring" },
 ];
 
-export default function Services({ lenisRef, isMobile }: ServicesProps) {
-  const isTouch = useIsTouchDevice();
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    itemRefs.current = itemRefs.current.slice(0, services.length);
-  }, []);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, index: number) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        setHoveredIndex(index);
-        return;
-      }
-
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        const next = (index + 1) % services.length;
-        setFocusedIndex(next);
-        itemRefs.current[next]?.focus();
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        const prev = (index - 1 + services.length) % services.length;
-        setFocusedIndex(prev);
-        itemRefs.current[prev]?.focus();
-      } else if (e.key === "Home") {
-        e.preventDefault();
-        setFocusedIndex(0);
-        itemRefs.current[0]?.focus();
-      } else if (e.key === "End") {
-        e.preventDefault();
-        setFocusedIndex(services.length - 1);
-        itemRefs.current[services.length - 1]?.focus();
-      }
-    },
-    []
-  );
-
-  useEffect(() => {
-    if (isMobile) return;
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".service-item",
-        {
-          opacity: 0,
-          x: -40,
-        },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current as HTMLElement,
-            start: "top top+=100",
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
+export default function Services() {
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-dark py-32 md:py-32"
-      aria-label="Our services"
-    >
+    <section id="services" className="bg-dark py-20 md:py-32" aria-labelledby="services-heading">
       <div className="mx-auto max-w-5xl px-6">
-        <div className="mb-12 md:mb-20">
-          <span className="font-mono text-xs tracking-[0.3em] text-light/40">
-            WHAT WE DO
-          </span>
-        </div>
-
-        <div
-          className="space-y-0"
-          role="list"
-          aria-label="Services list"
-        >
-          {services.map((service, i) => (
-            <div
-              key={service.number}
-              className="service-item relative border-t border-light/10"
-              role="listitem"
-            >
-              <div
-                ref={(el) => {
-                  itemRefs.current[i] = el;
-                }}
-                tabIndex={0}
-                role="button"
-                aria-label={`${service.title} — ${service.description}`}
-                className={`group flex cursor-pointer items-center justify-between py-6 md:py-10 transition-all duration-300 hover:border-l-2 hover:border-l-accent hover:pl-4 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-dark ${
-                  focusedIndex === i ? "border-l-2 border-l-accent pl-4" : ""
-                }`}
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onFocus={() => setFocusedIndex(i)}
-                onBlur={() => setFocusedIndex(null)}
-                onKeyDown={(e) => handleKeyDown(e, i)}
-              >
-                <div className="flex items-center gap-4 md:gap-8">
-                  <span className="font-mono text-xs tracking-widest text-light/30">
-                    {service.number}
-                  </span>
-                  <h3 className="text-base md:text-xl font-bold tracking-tight text-light group-hover:text-accent transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                </div>
-                <span className="text-light/20 group-hover:text-accent transition-colors duration-300">
-                  →
-                </span>
-              </div>
-
-              <div className="md:hidden">
-                {(isTouch || hoveredIndex === i) && (
-                  <div className="pt-3 pb-2 font-mono text-xs tracking-wider text-light/40">
-                    {service.description}
-                  </div>
-                )}
-              </div>
-              <div className="hidden md:block">
-                {(isTouch || hoveredIndex === i) && (
-                  <div className="absolute right-0 top-1/2 mr-8 -translate-y-1/2 font-mono text-xs tracking-wider text-light/40">
-                    {service.description}
-                  </div>
-                )}
-              </div>
-            </div>
+        <h2 id="services-heading" className="mb-10 text-3xl font-bold tracking-tight md:mb-16 md:text-5xl">WHAT WE DO.</h2>
+        <div className="border-b border-light/15">
+          {services.map((service) => (
+            <details key={service.number} className="service-item group border-t border-light/15">
+              <summary className="flex min-h-20 cursor-pointer list-none items-center gap-4 py-7 md:gap-8 md:py-9">
+                <span className="font-mono text-xs text-light/60" aria-hidden="true">{service.number}</span>
+                <h3 className="flex-1 text-base font-bold tracking-tight transition-colors group-open:text-accent md:text-2xl">{service.title}</h3>
+                <span className="service-toggle flex size-8 items-center justify-center text-accent" aria-hidden="true">+</span>
+              </summary>
+              <p className="max-w-2xl pb-8 pl-8 text-base leading-relaxed text-light/70 md:pl-12">{service.description}</p>
+            </details>
           ))}
         </div>
       </div>

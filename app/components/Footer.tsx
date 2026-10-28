@@ -1,62 +1,28 @@
-"use client";
+const links = [
+  { label: "Services", href: "#services" },
+  { label: "Work", href: "#work" },
+  { label: "Our process", href: "#process" },
+  { label: "About", href: "#about" },
+  { label: "Email", href: "mailto:hello@nexora.dev" },
+];
 
-import { useRef, type RefObject } from "react";
-import type Lenis from "lenis";
-
-interface FooterProps {
-  lenisRef: RefObject<Lenis | null>;
-  isMobile?: boolean;
-}
-
-export default function Footer({ lenisRef, isMobile }: FooterProps) {
-  const links = [
-    { label: "Instagram", href: "#" },
-    { label: "LinkedIn", href: "#" },
-    { label: "GitHub", href: "#" },
-    { label: "Email", href: "mailto:hello@nexora.dev" },
-  ];
-
+export default function Footer() {
   return (
-    <footer className="border-t border-light/10 bg-dark px-6 py-16" role="contentinfo">
+    <footer className="border-t border-light/15 bg-dark px-6 py-12 md:py-16">
       <div className="mx-auto max-w-5xl">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          {/* Brand */}
+        <div className="flex flex-col justify-between gap-8 md:flex-row">
           <div>
-            <h3 className="text-xl font-bold tracking-widest text-light">
-              NEXORA
-            </h3>
-            <p className="mt-2 font-mono text-xs tracking-[0.2em] text-light/30">
-              DIGITAL SYSTEMS
-            </p>
-            <p className="mt-1 font-mono text-xs tracking-[0.2em] text-light/30">
-              & EXPERIENCES
-            </p>
-            <p className="mt-4 font-mono text-xs tracking-wider text-light/20">
-              SÃO PAULO · BRAZIL
-            </p>
+            <a href="#top" className="brand-link text-xl font-bold tracking-[0.2em]" aria-label="Nexora — back to top">NEXORA<span className="text-accent">.</span></a>
+            <p className="mt-3 text-sm text-light/70">Digital Systems & Experiences</p>
+            <p className="mt-2 text-sm text-light/60">São Paulo · Brazil</p>
           </div>
-
-          {/* Links */}
-          <div className="flex flex-col items-start md:items-end">
-            <nav className="space-y-3" aria-label="Social links">
-              {links.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="font-mono text-xs tracking-widest text-light/40 transition-colors duration-200 hover:text-accent px-2"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </div>
+          <nav className="flex flex-wrap items-start gap-x-5 gap-y-1 md:max-w-xs md:justify-end" aria-label="Footer navigation">
+            {links.map((link) => <a key={link.label} href={link.href} className="nav-link">{link.label}</a>)}
+          </nav>
         </div>
-
-        {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-light/5">
-          <p className="font-mono text-[10px] tracking-widest text-light/20">
-            © 2026 NEXORA. ALL RIGHTS RESERVED.
-          </p>
+        <div className="mt-12 flex flex-col justify-between gap-4 border-t border-light/15 pt-6 text-xs text-light/60 sm:flex-row">
+          <p>© {new Date().getFullYear()} NEXORA. All rights reserved.</p>
+          <p>Portfolio concept · Illustrative projects</p>
         </div>
       </div>
     </footer>
